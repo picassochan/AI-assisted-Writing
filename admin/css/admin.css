@@ -24,13 +24,17 @@
 }
 
 .aiaw-control-panel {
-	flex: 0 0 320px;
-	min-width: 280px;
+	flex: 0 0 340px;
+	min-width: 300px;
 }
 
 .aiaw-editor-panel {
 	flex: 1;
 	min-width: 0;
+}
+
+#aiaw-input-description {
+	resize: vertical;
 }
 
 /* Category Cards */

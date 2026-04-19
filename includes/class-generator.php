@@ -20,9 +20,6 @@ class AIAW_Generator {
 
 	private function __construct() {
 		add_action( 'wp_ajax_aiaw_generate', array( $this, 'ajax_generate' ) );
-		add_action( 'wp_ajax_aiaw_generate_outline', array( $this, 'ajax_generate_outline' ) );
-		add_action( 'wp_ajax_aiaw_expand_section', array( $this, 'ajax_expand_section' ) );
-		add_action( 'wp_ajax_aiaw_generate_tags', array( $this, 'ajax_generate_tags' ) );
 		add_action( 'wp_ajax_aiaw_create_post', array( $this, 'ajax_create_post' ) );
 	}
 
@@ -36,19 +33,31 @@ class AIAW_Generator {
 	public function ajax_generate() {
 		$this->verify_request();
 
-		$cat_id   = sanitize_text_field( wp_unslash( $_POST['category_id'] ) );
-		$topic_id = sanitize_text_field( wp_unslash( $_POST['topic_id'] ) );
-		$keywords = isset( $_POST['keywords'] ) ? sanitize_text_field( wp_unslash( $_POST['keywords'] ) ) : '';
+		$title       = sanitize_text_field( wp_unslash( $_POST['title'] ) );
+		$description = sanitize_textarea_field( wp_unslash( $_POST['description'] ) );
+		$template_id = sanitize_text_field( wp_unslash( $_POST['template_id'] ) );
+		$category_id = absint( $_POST['category_id'] );
 
-		$template = AIAW_Template::get_instance();
-		$cat   = $template->get_category( $cat_id );
-		$topic = $template->get_topic( $cat_id, $topic_id );
-
-		if ( ! $cat || ! $topic ) {
-			wp_send_json_error( array( 'message' => __( 'Invalid category or topic.', 'ai-assisted-writing' ) ) );
+		if ( empty( $title ) ) {
+			wp_send_json_error( array( 'message' => __( 'Please enter a title.', 'ai-assisted-writing' ) ) );
 		}
 
-		$prompt   = $this->build_prompt( $cat, $topic, $keywords, 'full' );
+		$template = null;
+		if ( ! empty( $template_id ) ) {
+			$tpl = AIAW_Template::get_instance();
+			foreach ( $tpl->get_all() as $cat ) {
+				if ( absint( $cat['wp_category_id'] ) === $category_id ) {
+					foreach ( $cat['topics'] as $topic ) {
+						if ( $topic['id'] === $template_id ) {
+							$template = $topic;
+							break 2;
+						}
+					}
+				}
+			}
+		}
+
+		$prompt   = $this->build_prompt( $title, $description, $template );
 		$messages = $this->build_messages( $prompt );
 
 		$result = AIAW_API::get_instance()->generate( $messages );
@@ -57,95 +66,42 @@ class AIAW_Generator {
 			wp_send_json_error( array( 'message' => $result->get_error_message() ) );
 		}
 
+		$data = $this->parse_response( $result );
+
 		wp_send_json_success( array(
-			'content'       => $result,
-			'category_id'   => $cat['wp_category_id'],
-			'category_name' => $cat['name'],
+			'title'       => $data['title'],
+			'content'     => $data['content'],
+			'tags'        => $data['tags'],
+			'category_id' => $category_id,
 		) );
 	}
 
-	public function ajax_generate_outline() {
-		$this->verify_request();
-
-		$cat_id   = sanitize_text_field( wp_unslash( $_POST['category_id'] ) );
-		$topic_id = sanitize_text_field( wp_unslash( $_POST['topic_id'] ) );
-		$keywords = isset( $_POST['keywords'] ) ? sanitize_text_field( wp_unslash( $_POST['keywords'] ) ) : '';
-
-		$template = AIAW_Template::get_instance();
-		$cat   = $template->get_category( $cat_id );
-		$topic = $template->get_topic( $cat_id, $topic_id );
-
-		if ( ! $cat || ! $topic ) {
-			wp_send_json_error( array( 'message' => __( 'Invalid category or topic.', 'ai-assisted-writing' ) ) );
+	private function parse_response( $result ) {
+		// Try to parse as JSON first
+		$decoded = json_decode( $result, true );
+		if ( is_array( $decoded ) && isset( $decoded['content'] ) ) {
+			return array(
+				'title'   => $decoded['title'] ?? '',
+				'content' => $decoded['content'],
+				'tags'    => $decoded['tags'] ?? array(),
+			);
 		}
 
-		$prompt   = $this->build_prompt( $cat, $topic, $keywords, 'outline' );
-		$messages = $this->build_messages( $prompt );
+		// Fallback: extract title from first H1, rest as content
+		$title   = '';
+		$content = $result;
 
-		$result = AIAW_API::get_instance()->generate( $messages );
-
-		if ( is_wp_error( $result ) ) {
-			wp_send_json_error( array( 'message' => $result->get_error_message() ) );
+		if ( preg_match( '/^#\s+(.+)$/m', $result, $matches ) ) {
+			$title   = $matches[1];
+			$content = preg_replace( '/^#\s+.+$/m', '', $result, 1 );
+			$content = trim( $content );
 		}
 
-		wp_send_json_success( array(
-			'outline'       => $result,
-			'category_id'   => $cat['wp_category_id'],
-			'category_name' => $cat['name'],
-		) );
-	}
-
-	public function ajax_expand_section() {
-		$this->verify_request();
-
-		$outline       = wp_kses_post( wp_unslash( $_POST['outline'] ) );
-		$section_index = absint( $_POST['section_index'] );
-		$section_title = sanitize_text_field( wp_unslash( $_POST['section_title'] ) );
-		$keywords      = isset( $_POST['keywords'] ) ? sanitize_text_field( wp_unslash( $_POST['keywords'] ) ) : '';
-
-		$prompt = sprintf(
-			/* translators: 1: section title 2: outline context 3: extra keywords */
-			__( "Write a detailed, engaging section for the heading: \"%1\$s\"\n\nFull outline context:\n%2\$s\n\n%3\$s\n\nWrite in a professional yet accessible tone. Use markdown formatting. The section should be 300-500 words.", 'ai-assisted-writing' ),
-			$section_title,
-			$outline,
-			$keywords ? sprintf( __( 'Focus on these keywords: %s', 'ai-assisted-writing' ), $keywords ) : ''
+		return array(
+			'title'   => $title,
+			'content' => $content,
+			'tags'    => array(),
 		);
-
-		$messages = $this->build_messages( $prompt );
-		$result   = AIAW_API::get_instance()->generate( $messages );
-
-		if ( is_wp_error( $result ) ) {
-			wp_send_json_error( array( 'message' => $result->get_error_message() ) );
-		}
-
-		wp_send_json_success( array( 'content' => $result ) );
-	}
-
-	public function ajax_generate_tags() {
-		$this->verify_request();
-
-		$content = wp_kses_post( wp_unslash( $_POST['content'] ) );
-
-		$prompt = sprintf(
-			/* translators: %s: article content */
-			__( 'Based on the following article, suggest 3 to 5 relevant tags as a JSON array of strings. Only return the JSON array, nothing else.\n\nArticle:\n%s', 'ai-assisted-writing' ),
-			$content
-		);
-
-		$messages = $this->build_messages( $prompt );
-		$result   = AIAW_API::get_instance()->generate( $messages );
-
-		if ( is_wp_error( $result ) ) {
-			wp_send_json_error( array( 'message' => $result->get_error_message() ) );
-		}
-
-		$tags = json_decode( $result, true );
-		if ( ! is_array( $tags ) ) {
-			preg_match_all( '/"([^"]+)"/', $result, $matches );
-			$tags = isset( $matches[1] ) ? $matches[1] : array();
-		}
-
-		wp_send_json_success( array( 'tags' => array_slice( $tags, 0, 5 ) ) );
 	}
 
 	public function ajax_create_post() {
@@ -188,29 +144,46 @@ class AIAW_Generator {
 		) );
 	}
 
-	private function build_prompt( $cat, $topic, $keywords, $mode ) {
-		$keywords_part = $keywords
-			? sprintf( __( "\n\nFocus on these keywords: %s", 'ai-assisted-writing' ), $keywords )
-			: '';
+	private function build_prompt( $title, $description, $template ) {
+		$template_part = '';
+		if ( $template && ! empty( $template['prompt'] ) ) {
+			$template_part = sprintf(
+				"\n\n%s",
+				$template['prompt']
+			);
+		}
 
-		if ( 'outline' === $mode ) {
-			return sprintf(
-				/* translators: 1: topic name 2: category name 3: custom prompt 4: keywords */
-				__( 'Create a detailed article outline for the topic "%1$s" in the category "%2$s".%3$s%4$s\n\nReturn the outline in markdown format with H2 headings and brief bullet points under each. Include an introduction and conclusion section.', 'ai-assisted-writing' ),
-				$topic['name'],
-				$cat['name'],
-				$topic['prompt'] ? "\n\nAdditional instructions: " . $topic['prompt'] : '',
-				$keywords_part
+		$description_part = '';
+		if ( ! empty( $description ) ) {
+			$description_part = sprintf(
+				"\n\n%s:\n%s",
+				__( 'User provided description/outline', 'ai-assisted-writing' ),
+				$description
 			);
 		}
 
 		return sprintf(
-			/* translators: 1: topic name 2: category name 3: custom prompt 4: keywords */
-			__( 'Write a complete, well-structured article about "%1$s" in the category "%2$s".%3$s%4$s\n\nRequirements:\n- Use proper headings (H1 for title, H2 for sections)\n- Include an introduction and conclusion\n- Write in a professional yet engaging tone\n- Aim for 800-1500 words\n- Use markdown formatting', 'ai-assisted-writing' ),
-			$topic['name'],
-			$cat['name'],
-			$topic['prompt'] ? "\n\nAdditional instructions: " . $topic['prompt'] : '',
-			$keywords_part
+			/* translators: %s: article title */
+			__( 'Write a complete, well-structured article with the title: "%1$s"%2$s%3$s
+
+Return your response as a JSON object with this exact structure:
+{
+  "title": "Your suggested title (can refine the original)",
+  "content": "Full article content in markdown format (do NOT include the title as H1)",
+  "tags": ["tag1", "tag2", "tag3"]
+}
+
+Requirements:
+- Use proper headings (H2 for sections, H3 for subsections)
+- Include an introduction and conclusion
+- Write in a professional yet engaging tone
+- Aim for 800-1500 words
+- Use markdown formatting
+- Suggest 3-5 relevant tags
+- Only return the JSON object, nothing else', 'ai-assisted-writing' ),
+			$title,
+			$template_part,
+			$description_part
 		);
 	}
 
@@ -218,7 +191,7 @@ class AIAW_Generator {
 		return array(
 			array(
 				'role'    => 'system',
-				'content' => __( 'You are a professional content writer for a WordPress blog. Write clear, engaging, and SEO-friendly content. Always respond in the same language as the user\'s request.', 'ai-assisted-writing' ),
+				'content' => __( 'You are a professional content writer for a WordPress blog. Write clear, engaging, and SEO-friendly content. Always respond in the same language as the user\'s request. You must respond with valid JSON only.', 'ai-assisted-writing' ),
 			),
 			array(
 				'role'    => 'user',

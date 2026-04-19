@@ -247,42 +247,39 @@
 		bindWritingAssistant: function() {
 			var self = this;
 
+			// Category change -> populate matching AI templates
 			$('#aiaw-select-category').on('change', function() {
-				var catId = $(this).val();
-				var $topic = $('#aiaw-select-topic');
-				$topic.find('option:not(:first)').remove();
+				var catId = parseInt($(this).val(), 10);
+				var $template = $('#aiaw-select-template');
+				$template.find('option:not(:first)').remove();
 
 				if (!catId) {
-					$topic.prop('disabled', true);
+					$template.prop('disabled', true);
 					return;
 				}
 
-				$topic.prop('disabled', false);
-				var cat = (aiawTemplates || []).find(function(c) { return c.id === catId; });
-				if (cat && cat.topics) {
-					cat.topics.forEach(function(t) {
-						$topic.append($('<option>').val(t.id).text(t.name));
-					});
+				$template.prop('disabled', false);
+				var found = false;
+				(aiawTemplates || []).forEach(function(cat) {
+					if (parseInt(cat.wp_category_id, 10) === catId && cat.topics) {
+						cat.topics.forEach(function(t) {
+							$template.append($('<option>').val(t.id).text(t.name));
+							found = true;
+						});
+					}
+				});
+
+				if (!found) {
+					$template.append($('<option>').val('').text(aiaw.strings.no_templates));
 				}
 			});
 
+			// Generate button
 			$('#aiaw-generate-btn').on('click', function() {
-				var mode = $('input[name="aiaw_mode"]:checked').val();
-				if (mode === 'stepbystep') {
-					self.generateOutline();
-				} else {
-					self.generateArticle();
-				}
+				self.generateArticle();
 			});
 
-			$('#aiaw-expand-all-btn').on('click', function() {
-				self.expandAllSections();
-			});
-
-			$('#aiaw-auto-tags-btn').on('click', function() {
-				self.generateTags();
-			});
-
+			// Save / Publish
 			$('#aiaw-save-draft-btn').on('click', function() {
 				self.createPost('draft');
 			});
@@ -293,10 +290,11 @@
 
 		generateArticle: function() {
 			var catId = $('#aiaw-select-category').val();
-			var topicId = $('#aiaw-select-topic').val();
+			var title = $('#aiaw-input-title').val();
+			var templateId = $('#aiaw-select-template').val();
 
 			if (!catId) { alert(aiaw.strings.select_cat); return; }
-			if (!topicId) { alert(aiaw.strings.select_topic); return; }
+			if (!title) { alert(aiaw.strings.enter_title); return; }
 
 			var $status = $('#aiaw-generate-status');
 			$('#aiaw-generate-btn').prop('disabled', true);
@@ -306,18 +304,18 @@
 				action: 'aiaw_generate',
 				nonce: aiaw.nonce,
 				category_id: catId,
-				topic_id: topicId,
-				keywords: $('#aiaw-keywords').val()
+				template_id: templateId || '',
+				title: title,
+				description: $('#aiaw-input-description').val()
 			}, function(response) {
 				$('#aiaw-generate-btn').prop('disabled', false);
 				$status.text('');
 				if (response.success) {
-					var content = response.data.content;
-					$('#aiaw-article-content').val(content);
+					$('#aiaw-article-title').val(response.data.title || title);
+					$('#aiaw-article-content').val(response.data.content || '');
 					$('#aiaw-article-cat-id').val(response.data.category_id);
-					var titleMatch = content.match(/^#\s+(.+)$/m);
-					if (titleMatch) {
-						$('#aiaw-article-title').val(titleMatch[1]);
+					if (response.data.tags && response.data.tags.length > 0) {
+						$('#aiaw-article-tags').val(response.data.tags.join(', '));
 					}
 				} else {
 					alert(response.data.message);
@@ -326,131 +324,6 @@
 				$('#aiaw-generate-btn').prop('disabled', false);
 				$status.text('');
 				alert(aiaw.strings.req_failed);
-			});
-		},
-
-		generateOutline: function() {
-			var catId = $('#aiaw-select-category').val();
-			var topicId = $('#aiaw-select-topic').val();
-
-			if (!catId) { alert(aiaw.strings.select_cat); return; }
-			if (!topicId) { alert(aiaw.strings.select_topic); return; }
-
-			var $status = $('#aiaw-generate-status');
-			$('#aiaw-generate-btn').prop('disabled', true);
-			$status.text(aiaw.strings.gen_outline);
-
-			$.post(aiaw.ajax_url, {
-				action: 'aiaw_generate_outline',
-				nonce: aiaw.nonce,
-				category_id: catId,
-				topic_id: topicId,
-				keywords: $('#aiaw-keywords').val()
-			}, function(response) {
-				$('#aiaw-generate-btn').prop('disabled', false);
-				$status.text('');
-				if (response.success) {
-					$('#aiaw-outline-panel').show();
-					$('#aiaw-outline-content').empty().append(
-						$('<textarea>').attr({
-							id: 'aiaw-outline-text',
-							class: 'large-text',
-							rows: 10
-						}).val(response.data.outline)
-					);
-					$('#aiaw-article-cat-id').val(response.data.category_id);
-				} else {
-					alert(response.data.message);
-				}
-			}).fail(function() {
-				$('#aiaw-generate-btn').prop('disabled', false);
-				$status.text('');
-				alert(aiaw.strings.req_failed);
-			});
-		},
-
-		expandAllSections: function() {
-			var outline = $('#aiaw-outline-text').val();
-			var lines = outline.split('\n');
-			var sections = [];
-			var content = '';
-
-			lines.forEach(function(line) {
-				var match = line.match(/^##\s+(.+)$/);
-				if (match) {
-					sections.push(match[1]);
-				}
-			});
-
-			if (sections.length === 0) {
-				alert(aiaw.strings.no_sections);
-				return;
-			}
-
-			var $status = $('#aiaw-generate-status');
-			var $btn = $('#aiaw-expand-all-btn');
-			$btn.prop('disabled', true);
-			$status.text(aiaw.strings.expanding);
-
-			var index = 0;
-
-			var expandNext = function() {
-				if (index >= sections.length) {
-					$btn.prop('disabled', false);
-					$status.text('');
-					$('#aiaw-article-content').val(content);
-					var titleMatch = outline.match(/^#\s+(.+)$/m);
-					if (titleMatch) {
-						$('#aiaw-article-title').val(titleMatch[1]);
-					}
-					return;
-				}
-
-				var section = sections[index];
-				$status.text(aiaw.strings.expanding + ' (' + (index + 1) + '/' + sections.length + ')');
-
-				$.post(aiaw.ajax_url, {
-					action: 'aiaw_expand_section',
-					nonce: aiaw.nonce,
-					outline: outline,
-					section_index: index,
-					section_title: section,
-					keywords: $('#aiaw-keywords').val()
-				}, function(response) {
-					if (response.success) {
-						content += '## ' + section + '\n\n' + response.data.content + '\n\n';
-					}
-					index++;
-					expandNext();
-				}).fail(function() {
-					index++;
-					expandNext();
-				});
-			};
-
-			expandNext();
-		},
-
-		generateTags: function() {
-			var content = $('#aiaw-article-content').val();
-			if (!content) { alert(aiaw.strings.gen_content_first); return; }
-
-			var $btn = $('#aiaw-auto-tags-btn');
-			$btn.prop('disabled', true);
-
-			$.post(aiaw.ajax_url, {
-				action: 'aiaw_generate_tags',
-				nonce: aiaw.nonce,
-				content: content
-			}, function(response) {
-				$btn.prop('disabled', false);
-				if (response.success && response.data.tags) {
-					$('#aiaw-article-tags').val(response.data.tags.join(', '));
-				} else {
-					alert(response.data.message || aiaw.strings.tags_err);
-				}
-			}).fail(function() {
-				$btn.prop('disabled', false);
 			});
 		},
 

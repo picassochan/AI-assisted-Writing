@@ -30,38 +30,31 @@ defined( 'ABSPATH' ) || exit;
 					<label for="aiaw-select-category"><?php esc_html_e( 'Category', 'ai-assisted-writing' ); ?></label><br />
 					<select id="aiaw-select-category" class="regular-text">
 						<option value=""><?php esc_html_e( '-- Select Category --', 'ai-assisted-writing' ); ?></option>
-						<?php foreach ( $templates as $cat ) : ?>
-							<option value="<?php echo esc_attr( $cat['id'] ); ?>"
-								data-wp-cat="<?php echo esc_attr( $cat['wp_category_id'] ); ?>">
-								<?php echo esc_html( $cat['name'] ); ?>
+						<?php foreach ( $categories as $cat ) : ?>
+							<option value="<?php echo esc_attr( $cat->term_id ); ?>">
+								<?php echo esc_html( $cat->name ); ?>
 							</option>
 						<?php endforeach; ?>
 					</select>
 				</p>
 
 				<p>
-					<label for="aiaw-select-topic"><?php esc_html_e( 'Topic', 'ai-assisted-writing' ); ?></label><br />
-					<select id="aiaw-select-topic" class="regular-text" disabled>
-						<option value=""><?php esc_html_e( '-- Select Topic --', 'ai-assisted-writing' ); ?></option>
+					<label for="aiaw-select-template"><?php esc_html_e( 'AI Template', 'ai-assisted-writing' ); ?></label><br />
+					<select id="aiaw-select-template" class="regular-text" disabled>
+						<option value=""><?php esc_html_e( '-- Select Template --', 'ai-assisted-writing' ); ?></option>
 					</select>
 				</p>
 
 				<p>
-					<label for="aiaw-keywords"><?php esc_html_e( 'Keywords (optional)', 'ai-assisted-writing' ); ?></label><br />
-					<input type="text" id="aiaw-keywords" class="regular-text"
-						placeholder="<?php esc_attr_e( 'e.g. technology, AI trends', 'ai-assisted-writing' ); ?>" />
+					<label for="aiaw-input-title"><?php esc_html_e( 'Title', 'ai-assisted-writing' ); ?></label><br />
+					<input type="text" id="aiaw-input-title" class="large-text"
+						placeholder="<?php esc_attr_e( 'Enter article title', 'ai-assisted-writing' ); ?>" />
 				</p>
 
 				<p>
-					<label><?php esc_html_e( 'Generation Mode', 'ai-assisted-writing' ); ?></label><br />
-					<label>
-						<input type="radio" name="aiaw_mode" value="oneshot" checked />
-						<?php esc_html_e( 'One-shot (full article)', 'ai-assisted-writing' ); ?>
-					</label><br />
-					<label>
-						<input type="radio" name="aiaw_mode" value="stepbystep" />
-						<?php esc_html_e( 'Step-by-step (outline first)', 'ai-assisted-writing' ); ?>
-					</label>
+					<label for="aiaw-input-description"><?php esc_html_e( 'Description / Outline', 'ai-assisted-writing' ); ?></label><br />
+					<textarea id="aiaw-input-description" class="large-text" rows="4"
+						placeholder="<?php esc_attr_e( 'Briefly describe what the article should cover...', 'ai-assisted-writing' ); ?>"></textarea>
 				</p>
 
 				<p>
@@ -69,17 +62,6 @@ defined( 'ABSPATH' ) || exit;
 						<?php esc_html_e( 'Generate', 'ai-assisted-writing' ); ?>
 					</button>
 					<span id="aiaw-generate-status"></span>
-				</p>
-			</div>
-
-			<!-- Outline Panel (hidden until step-by-step mode generates an outline) -->
-			<div id="aiaw-outline-panel" class="aiaw-card" style="display:none;">
-				<h3><?php esc_html_e( 'Outline', 'ai-assisted-writing' ); ?></h3>
-				<div id="aiaw-outline-content"></div>
-				<p>
-					<button type="button" id="aiaw-expand-all-btn" class="button button-primary">
-						<?php esc_html_e( 'Expand All Sections', 'ai-assisted-writing' ); ?>
-					</button>
 				</p>
 			</div>
 		</div>
@@ -103,9 +85,6 @@ defined( 'ABSPATH' ) || exit;
 					<label for="aiaw-article-tags"><?php esc_html_e( 'Tags', 'ai-assisted-writing' ); ?></label><br />
 					<input type="text" id="aiaw-article-tags" class="large-text"
 						placeholder="<?php esc_attr_e( 'Comma-separated tags', 'ai-assisted-writing' ); ?>" />
-					<button type="button" id="aiaw-auto-tags-btn" class="button button-small">
-						<?php esc_html_e( 'Auto-generate Tags', 'ai-assisted-writing' ); ?>
-					</button>
 				</p>
 
 				<p>

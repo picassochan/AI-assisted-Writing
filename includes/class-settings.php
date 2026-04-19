@@ -221,6 +221,7 @@ class AIAW_Settings {
 		}
 
 		$templates   = AIAW_Template::get_instance()->get_all();
+		$categories  = get_categories( array( 'hide_empty' => false ) );
 		$settings    = get_option( 'aiaw_api_settings', array() );
 		$has_api_key = ! empty( $settings['api_key'] );
 
