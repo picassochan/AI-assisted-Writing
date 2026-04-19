@@ -28,6 +28,13 @@
 	min-width: 300px;
 }
 
+.aiaw-control-panel select,
+.aiaw-control-panel input[type="text"],
+.aiaw-control-panel textarea {
+	max-width: 100%;
+	box-sizing: border-box;
+}
+
 .aiaw-editor-panel {
 	flex: 1;
 	min-width: 0;

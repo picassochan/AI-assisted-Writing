@@ -3,7 +3,7 @@
 # This file is distributed under the GPL-2.0+ license.
 msgid ""
 msgstr ""
-"Project-Id-Version: AI-assisted Writing 1.0.4\n"
+"Project-Id-Version: AI-assisted Writing 1.0.9\n"
 "Report-Msgid-Bugs-To: https://github.com/picassochan/AI-assisted-Writing/issues\n"
 "POT-Creation-Date: 2026-04-19 00:00+0000\n"
 "PO-Revision-Date: 2026-04-19 00:00+0800\n"
@@ -219,17 +219,17 @@ msgstr "用户提供的描述/大纲"
 msgid "Please enter a title."
 msgstr "请输入标题。"
 
-msgid "Write a complete, well-structured article with the title: \"%1$s\"%2$s%3$s\n\nReturn your response as a JSON object with this exact structure:\n{\n  \"title\": \"Your suggested title (can refine the original)\",\n  \"content\": \"Full article content in markdown format (do NOT include the title as H1)\",\n  \"tags\": [\"tag1\", \"tag2\", \"tag3\"]\n}\n\nRequirements:\n- Use proper headings (H2 for sections, H3 for subsections)\n- Include an introduction and conclusion\n- Write in a professional yet engaging tone\n- Aim for 800-1500 words\n- Use markdown formatting\n- Suggest 3-5 relevant tags\n- Only return the JSON object, nothing else"
-msgstr "撰写一篇标题为 \"%1$s\" 的完整、结构清晰的文章。%2$s%3$s\n\n请以 JSON 格式返回，结构如下：\n{\n  \"title\": \"建议的标题（可优化原标题）\",\n  \"content\": \"完整的 Markdown 格式文章内容（不要包含 H1 标题）\",\n  \"tags\": [\"标签1\", \"标签2\", \"标签3\"]\n}\n\n要求：\n- 使用适当的标题（H2 为章节标题，H3 为小节标题）\n- 包含引言和结论\n- 使用专业且引人入胜的语调\n- 目标 800-1500 字\n- 使用 Markdown 格式\n- 建议 3-5 个相关标签\n- 仅返回 JSON 对象，不要返回其他内容"
+msgid "Write a complete, well-structured article with the title: \"%1$s\"%2$s%3$s\n\nReturn your response as a JSON object with this exact structure:\n{\n  \"title\": \"Your suggested title (can refine the original)\",\n  \"content\": \"Full article content in markdown format (do NOT include the title as H1)\",\n  \"tags\": [\"tag1\", \"tag2\", \"tag3\"]\n}\n\nRequirements:\n- Use proper headings (H2 for sections, H3 for subsections)\n- Include an introduction and conclusion\n- Write in a professional yet engaging tone\n- Aim for 800-1500 words\n- Use ONLY pure Markdown formatting — NEVER use any HTML tags (no <p>, <h1>, <br>, <strong>, etc.)\n\t- Use **bold**, *italic*, `code`, ```code blocks```, - lists, > blockquotes, # headings\n- Suggest 3-5 relevant tags\n- Only return the JSON object, nothing else"
+msgstr "撰写一篇标题为 \"%1$s\" 的完整、结构清晰的文章。%2$s%3$s\n\n请以 JSON 格式返回，结构如下：\n{\n  \"title\": \"建议的标题（可优化原标题）\",\n  \"content\": \"完整的 Markdown 格式文章内容（不要包含 H1 标题）\",\n  \"tags\": [\"标签1\", \"标签2\", \"标签3\"]\n}\n\n要求：\n- 使用适当的标题（H2 为章节标题，H3 为小节标题）\n- 包含引言和结论\n- 使用专业且引人入胜的语调\n- 目标 800-1500 字\n- 仅使用纯 Markdown 格式 — 禁止使用任何 HTML 标签（不得使用 <p>、<h1>、<br>、<strong> 等）\n\t- 使用 **粗体**、*斜体*、`代码`、```代码块```、- 列表、> 引用、# 标题\n- 建议 3-5 个相关标签\n- 仅返回 JSON 对象，不要返回其他内容"
 
-msgid "Write a complete, well-structured article with the title: \"%1$s\"%2$s%3$s\n\nRequirements:\n- Start with the title as a markdown H1 heading\n- Use proper headings (H2 for sections, H3 for subsections)\n- Include an introduction and conclusion\n- Write in a professional yet engaging tone\n- Aim for 800-1500 words\n- Use markdown formatting"
-msgstr "撰写一篇标题为 \"%1$s\" 的完整、结构清晰的文章。%2$s%3$s\n\n要求：\n- 以 Markdown H1 标题开头\n- 使用适当的标题（H2 为章节标题，H3 为小节标题）\n- 包含引言和结论\n- 使用专业且引人入胜的语调\n- 目标 800-1500 字\n- 使用 Markdown 格式"
+msgid "Write a complete, well-structured article with the title: \"%1$s\"%2$s%3$s\n\nRequirements:\n- Start with the title as a markdown H1 heading\n- Use proper headings (H2 for sections, H3 for subsections)\n- Include an introduction and conclusion\n- Write in a professional yet engaging tone\n- Aim for 800-1500 words\n- Use ONLY pure Markdown formatting — NEVER use any HTML tags (no <p>, <h1>, <br>, <strong>, etc.)\n\t- Use **bold**, *italic*, `code`, ```code blocks```, - lists, > blockquotes, # headings"
+msgstr "撰写一篇标题为 \"%1$s\" 的完整、结构清晰的文章。%2$s%3$s\n\n要求：\n- 以 Markdown H1 标题开头\n- 使用适当的标题（H2 为章节标题，H3 为小节标题）\n- 包含引言和结论\n- 使用专业且引人入胜的语调\n- 目标 800-1500 字\n- 仅使用纯 Markdown 格式 — 禁止使用任何 HTML 标签（不得使用 <p>、<h1>、<br>、<strong> 等）\n\t- 使用 **粗体**、*斜体*、`代码`、```代码块```、- 列表、> 引用、# 标题"
 
-msgid "You are a professional content writer for a WordPress blog. Write clear, engaging, and SEO-friendly content. Always respond in the same language as the user's request. You must respond with valid JSON only."
-msgstr "你是一位专业的 WordPress 博客内容撰稿人。请撰写清晰、引人入胜且 SEO 友好的内容。始终使用与用户请求相同的语言回复。必须仅返回有效的 JSON。"
+msgid "You are a professional content writer for a WordPress blog. Write clear, engaging, and SEO-friendly content. Always respond in the same language as the user's request. You MUST use pure Markdown formatting only — NEVER output any HTML tags. Use **bold**, *italic*, `code`, ```code blocks```, - lists, > blockquotes, # headings. You must respond with valid JSON only."
+msgstr "你是一位专业的 WordPress 博客内容撰稿人。请撰写清晰、引人入胜且 SEO 友好的内容。始终使用与用户请求相同的语言回复。你必须仅使用纯 Markdown 格式 — 禁止输出任何 HTML 标签。使用 **粗体**、*斜体*、`代码`、```代码块```、- 列表、> 引用、# 标题。必须仅返回有效的 JSON。"
 
-msgid "You are a professional content writer for a WordPress blog. Write clear, engaging, and SEO-friendly content. Always respond in the same language as the user's request. Output markdown directly."
-msgstr "你是一位专业的 WordPress 博客内容撰稿人。请撰写清晰、引人入胜且 SEO 友好的内容。始终使用与用户请求相同的语言回复。直接输出 Markdown。"
+msgid "You are a professional content writer for a WordPress blog. Write clear, engaging, and SEO-friendly content. Always respond in the same language as the user's request. You MUST use pure Markdown formatting only — NEVER output any HTML tags. Use **bold**, *italic*, `code`, ```code blocks```, - lists, > blockquotes, # headings."
+msgstr "你是一位专业的 WordPress 博客内容撰稿人。请撰写清晰、引人入胜且 SEO 友好的内容。始终使用与用户请求相同的语言回复。你必须仅使用纯 Markdown 格式 — 禁止输出任何 HTML 标签。使用 **粗体**、*斜体*、`代码`、```代码块```、- 列表、> 引用、# 标题。"
 
 msgid "Testing connection..."
 msgstr "正在测试连接..."
@@ -281,3 +281,12 @@ msgstr "删除时出错。"
 
 msgid "Generation error."
 msgstr "生成错误。"
+
+msgid "Debug Mode"
+msgstr "调试模式"
+
+msgid "Enable debug mode (shows debug panel on Writing Assistant page)"
+msgstr "启用调试模式（在写作助手页面显示调试面板）"
+
+msgid "Loading..."
+msgstr "加载中..."

@@ -283,7 +283,8 @@ Requirements:
 - Include an introduction and conclusion
 - Write in a professional yet engaging tone
 - Aim for 800-1500 words
-- Use markdown formatting
+- Use ONLY pure Markdown formatting — NEVER use any HTML tags (no <p>, <h1>, <br>, <strong>, etc.)
+	- Use **bold**, *italic*, `code`, ```code blocks```, - lists, > blockquotes, # headings
 - Suggest 3-5 relevant tags
 - Only return the JSON object, nothing else', 'ai-assisted-writing' ),
 			$title,
@@ -317,7 +318,8 @@ Requirements:
 - Include an introduction and conclusion
 - Write in a professional yet engaging tone
 - Aim for 800-1500 words
-- Use markdown formatting', 'ai-assisted-writing' ),
+- Use ONLY pure Markdown formatting — NEVER use any HTML tags (no <p>, <h1>, <br>, <strong>, etc.)
+	- Use **bold**, *italic*, `code`, ```code blocks```, - lists, > blockquotes, # headings', 'ai-assisted-writing' ),
 			$title,
 			$template_part,
 			$description_part
@@ -328,7 +330,7 @@ Requirements:
 		return array(
 			array(
 				'role'    => 'system',
-				'content' => __( 'You are a professional content writer for a WordPress blog. Write clear, engaging, and SEO-friendly content. Always respond in the same language as the user\'s request. You must respond with valid JSON only.', 'ai-assisted-writing' ),
+				'content' => __( 'You are a professional content writer for a WordPress blog. Write clear, engaging, and SEO-friendly content. Always respond in the same language as the user\'s request. You MUST use pure Markdown formatting only — NEVER output any HTML tags. Use **bold**, *italic*, `code`, ```code blocks```, - lists, > blockquotes, # headings. You must respond with valid JSON only.', 'ai-assisted-writing' ),
 			),
 			array(
 				'role'    => 'user',
@@ -341,7 +343,7 @@ Requirements:
 		return array(
 			array(
 				'role'    => 'system',
-				'content' => __( 'You are a professional content writer for a WordPress blog. Write clear, engaging, and SEO-friendly content. Always respond in the same language as the user\'s request. Output markdown directly.', 'ai-assisted-writing' ),
+				'content' => __( 'You are a professional content writer for a WordPress blog. Write clear, engaging, and SEO-friendly content. Always respond in the same language as the user\'s request. You MUST use pure Markdown formatting only — NEVER output any HTML tags. Use **bold**, *italic*, `code`, ```code blocks```, - lists, > blockquotes, # headings.', 'ai-assisted-writing' ),
 			),
 			array(
 				'role'    => 'user',

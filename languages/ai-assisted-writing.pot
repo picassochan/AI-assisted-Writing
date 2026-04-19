@@ -3,7 +3,7 @@
 # This file is distributed under the GPL-2.0+ license.
 msgid ""
 msgstr ""
-"Project-Id-Version: AI-assisted Writing 1.0.4\n"
+"Project-Id-Version: AI-assisted Writing 1.0.9\n"
 "Report-Msgid-Bugs-To: https://github.com/picassochan/AI-assisted-Writing/issues\n"
 "POT-Creation-Date: 2026-04-19 00:00+0000\n"
 "MIME-Version: 1.0\n"
@@ -217,16 +217,16 @@ msgstr ""
 msgid "Please enter a title."
 msgstr ""
 
-msgid "Write a complete, well-structured article with the title: \"%1$s\"%2$s%3$s\n\nReturn your response as a JSON object with this exact structure:\n{\n  \"title\": \"Your suggested title (can refine the original)\",\n  \"content\": \"Full article content in markdown format (do NOT include the title as H1)\",\n  \"tags\": [\"tag1\", \"tag2\", \"tag3\"]\n}\n\nRequirements:\n- Use proper headings (H2 for sections, H3 for subsections)\n- Include an introduction and conclusion\n- Write in a professional yet engaging tone\n- Aim for 800-1500 words\n- Use markdown formatting\n- Suggest 3-5 relevant tags\n- Only return the JSON object, nothing else"
+msgid "Write a complete, well-structured article with the title: \"%1$s\"%2$s%3$s\n\nReturn your response as a JSON object with this exact structure:\n{\n  \"title\": \"Your suggested title (can refine the original)\",\n  \"content\": \"Full article content in markdown format (do NOT include the title as H1)\",\n  \"tags\": [\"tag1\", \"tag2\", \"tag3\"]\n}\n\nRequirements:\n- Use proper headings (H2 for sections, H3 for subsections)\n- Include an introduction and conclusion\n- Write in a professional yet engaging tone\n- Aim for 800-1500 words\n- Use ONLY pure Markdown formatting — NEVER use any HTML tags (no <p>, <h1>, <br>, <strong>, etc.)\n\t- Use **bold**, *italic*, `code`, ```code blocks```, - lists, > blockquotes, # headings\n- Suggest 3-5 relevant tags\n- Only return the JSON object, nothing else"
 msgstr ""
 
-msgid "Write a complete, well-structured article with the title: \"%1$s\"%2$s%3$s\n\nRequirements:\n- Start with the title as a markdown H1 heading\n- Use proper headings (H2 for sections, H3 for subsections)\n- Include an introduction and conclusion\n- Write in a professional yet engaging tone\n- Aim for 800-1500 words\n- Use markdown formatting"
+msgid "Write a complete, well-structured article with the title: \"%1$s\"%2$s%3$s\n\nRequirements:\n- Start with the title as a markdown H1 heading\n- Use proper headings (H2 for sections, H3 for subsections)\n- Include an introduction and conclusion\n- Write in a professional yet engaging tone\n- Aim for 800-1500 words\n- Use ONLY pure Markdown formatting — NEVER use any HTML tags (no <p>, <h1>, <br>, <strong>, etc.)\n\t- Use **bold**, *italic*, `code`, ```code blocks```, - lists, > blockquotes, # headings"
 msgstr ""
 
-msgid "You are a professional content writer for a WordPress blog. Write clear, engaging, and SEO-friendly content. Always respond in the same language as the user's request. You must respond with valid JSON only."
+msgid "You are a professional content writer for a WordPress blog. Write clear, engaging, and SEO-friendly content. Always respond in the same language as the user's request. You MUST use pure Markdown formatting only — NEVER output any HTML tags. Use **bold**, *italic*, `code`, ```code blocks```, - lists, > blockquotes, # headings. You must respond with valid JSON only."
 msgstr ""
 
-msgid "You are a professional content writer for a WordPress blog. Write clear, engaging, and SEO-friendly content. Always respond in the same language as the user's request. Output markdown directly."
+msgid "You are a professional content writer for a WordPress blog. Write clear, engaging, and SEO-friendly content. Always respond in the same language as the user's request. You MUST use pure Markdown formatting only — NEVER output any HTML tags. Use **bold**, *italic*, `code`, ```code blocks```, - lists, > blockquotes, # headings."
 msgstr ""
 
 msgid "Testing connection..."
@@ -278,4 +278,13 @@ msgid "Error deleting."
 msgstr ""
 
 msgid "Generation error."
+msgstr ""
+
+msgid "Debug Mode"
+msgstr ""
+
+msgid "Enable debug mode (shows debug panel on Writing Assistant page)"
+msgstr ""
+
+msgid "Loading..."
 msgstr ""
