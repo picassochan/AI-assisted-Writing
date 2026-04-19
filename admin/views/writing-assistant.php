@@ -70,6 +70,9 @@ $debug_mode = ! empty( $settings['debug_mode'] );
 					<button type="button" id="aiaw-generate-btn" class="button button-primary button-large">
 						<?php esc_html_e( 'Generate', 'ai-assisted-writing' ); ?>
 					</button>
+					<button type="button" id="aiaw-stop-btn" class="button button-large" style="display:none;color:#fff;background:#d63638;border-color:#d63638;">
+						<?php esc_html_e( 'Stop', 'ai-assisted-writing' ); ?>
+					</button>
 					<span id="aiaw-generate-status"></span>
 				</p>
 			</div>

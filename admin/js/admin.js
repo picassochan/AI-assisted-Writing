@@ -34,6 +34,7 @@
 			this.bindTemplateManager();
 			this.bindWritingAssistant();
 			this.populateModelDropdown();
+			this.abortController = null;
 		},
 
 		// ========================================
@@ -324,6 +325,10 @@
 				self.generateArticle();
 			});
 
+			$('#aiaw-stop-btn').on('click', function() {
+				self.stopGeneration();
+			});
+
 			// Save / Publish
 			$('#aiaw-save-draft-btn').on('click', function() {
 				self.createPost('draft');
@@ -404,7 +409,8 @@
 				method: 'POST',
 				credentials: 'same-origin',
 				headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-				body: params.toString()
+				body: params.toString(),
+				signal: self.abortController ? self.abortController.signal : undefined
 			}).then(function(response) {
 				self.dlog('Stream: response status=', response.status, 'ok=', response.ok);
 
@@ -457,6 +463,7 @@
 							self.finalizeGeneratedContent(fullContent, title, $content, $articleTitle);
 							$status.text('');
 							$btn.prop('disabled', false);
+							$('#aiaw-stop-btn').hide();
 							// Auto-generate SEO
 							var seoTitle = $articleTitle.val();
 							var seoContent = $content.val();
@@ -476,6 +483,13 @@
 
 				return reader.read().then(processChunk);
 			}).catch(function(err) {
+				if (err.name === 'AbortError') {
+					self.dlog('Stream: aborted by user');
+					$status.text('');
+					$btn.prop('disabled', false);
+					$('#aiaw-stop-btn').hide();
+					return;
+				}
 				self.dlog('Stream: fetch failed —', err.message, '— falling back to AJAX');
 				self.generateAjax(catId, title, templateId, $btn, $status, $content, $articleTitle);
 			});
@@ -500,6 +514,7 @@
 			}, function(response) {
 				self.dlog('AJAX response:', JSON.stringify(response).substring(0, 500));
 				$btn.prop('disabled', false);
+				$('#aiaw-stop-btn').hide();
 				$status.text('');
 				if (response.success) {
 					$articleTitle.val(response.data.title || title);
@@ -519,6 +534,7 @@
 			}).fail(function(xhr, status, error) {
 				self.dlog('AJAX request failed:', status, error);
 				$btn.prop('disabled', false);
+				$('#aiaw-stop-btn').hide();
 				$status.text('');
 				alert(aiaw.strings.req_failed);
 			});

@@ -350,3 +350,6 @@ msgstr "模型"
 
 msgid "Default (Primary)"
 msgstr "默认（主模型）"
+
+msgid "Stop"
+msgstr "停止"
