@@ -1,0 +1,310 @@
+# Chinese (Simplified) translation for AI-assisted Writing.
+# Copyright (C) 2026 Picasso Chan
+# This file is distributed under the GPL-2.0+ license.
+msgid ""
+msgstr ""
+"Project-Id-Version: AI-assisted Writing 1.0.0\n"
+"Report-Msgid-Bugs-To: https://github.com/picassochan/AI-assisted-Writing/issues\n"
+"POT-Creation-Date: 2026-04-19 00:00+0000\n"
+"PO-Revision-Date: 2026-04-19 00:00+0800\n"
+"Last-Translator: Picasso Chan\n"
+"Language-Team: Chinese (Simplified)\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+msgid "AI-assisted Writing"
+msgstr "AI 辅助写作"
+
+msgid "Settings"
+msgstr "设置"
+
+msgid "Writing Assistant"
+msgstr "写作助手"
+
+msgid "AI-assisted Writing Settings"
+msgstr "AI 辅助写作设置"
+
+msgid "API Settings"
+msgstr "API 设置"
+
+msgid "AI Templates"
+msgstr "AI 模板"
+
+msgid "Permission denied."
+msgstr "权限不足。"
+
+msgid "Connection successful!"
+msgstr "连接成功！"
+
+msgid "Failed to save template."
+msgstr "保存模板失败。"
+
+msgid "Failed to delete."
+msgstr "删除失败。"
+
+msgid "API URL"
+msgstr "API 地址"
+
+msgid "OpenAI-compatible API endpoint (e.g. https://api.openai.com)."
+msgstr "兼容 OpenAI 的 API 端点（如 https://api.openai.com）。"
+
+msgid "API Key"
+msgstr "API 密钥"
+
+msgid "Test Connection"
+msgstr "测试连接"
+
+msgid "Fetch Models"
+msgstr "获取模型"
+
+msgid "Primary Model"
+msgstr "主模型"
+
+msgid "-- Select Model --"
+msgstr "-- 选择模型 --"
+
+msgid "-- Custom --"
+msgstr "-- 自定义 --"
+
+msgid "Enter model ID"
+msgstr "输入模型 ID"
+
+msgid "Backup Model"
+msgstr "备用模型"
+
+msgid "Used as fallback when the primary model fails."
+msgstr "当主模型失败时自动使用备用模型。"
+
+msgid "Add Category"
+msgstr "添加分类"
+
+msgid "Category Name"
+msgstr "分类名称"
+
+msgid "WordPress Category"
+msgstr "WordPress 分类"
+
+msgid "-- Select --"
+msgstr "-- 请选择 --"
+
+msgid "No templates yet. Add a category above to get started."
+msgstr "暂无模板。请在上方添加分类以开始使用。"
+
+msgid "Unassigned"
+msgstr "未分配"
+
+msgid "Edit"
+msgstr "编辑"
+
+msgid "Delete"
+msgstr "删除"
+
+msgid "View Prompt"
+msgstr "查看提示词"
+
+msgid "No topics yet."
+msgstr "暂无主题。"
+
+msgid "Add Topic"
+msgstr "添加主题"
+
+msgid "Topic Name"
+msgstr "主题名称"
+
+msgid "Prompt"
+msgstr "提示词"
+
+msgid "Edit Category"
+msgstr "编辑分类"
+
+msgid "Edit Topic"
+msgstr "编辑主题"
+
+msgid "Save"
+msgstr "保存"
+
+msgid "Cancel"
+msgstr "取消"
+
+msgid "AI Writing Assistant"
+msgstr "AI 写作助手"
+
+msgid "Please configure your API settings first."
+msgstr "请先配置 API 设置。"
+
+msgid "Go to Settings"
+msgstr "前往设置"
+
+msgid "Generate Article"
+msgstr "生成文章"
+
+msgid "Category"
+msgstr "分类"
+
+msgid "-- Select Category --"
+msgstr "-- 选择分类 --"
+
+msgid "Topic"
+msgstr "主题"
+
+msgid "-- Select Topic --"
+msgstr "-- 选择主题 --"
+
+msgid "Keywords (optional)"
+msgstr "关键词（可选）"
+
+msgid "e.g. technology, AI trends"
+msgstr "例如：技术、AI 趋势"
+
+msgid "Generation Mode"
+msgstr "生成模式"
+
+msgid "One-shot (full article)"
+msgstr "一次性（完整文章）"
+
+msgid "Step-by-step (outline first)"
+msgstr "分步（先生成大纲）"
+
+msgid "Generate"
+msgstr "生成"
+
+msgid "Outline"
+msgstr "大纲"
+
+msgid "Expand All Sections"
+msgstr "展开所有章节"
+
+msgid "Article Editor"
+msgstr "文章编辑器"
+
+msgid "Title"
+msgstr "标题"
+
+msgid "Content"
+msgstr "内容"
+
+msgid "Tags"
+msgstr "标签"
+
+msgid "Comma-separated tags"
+msgstr "逗号分隔的标签"
+
+msgid "Auto-generate Tags"
+msgstr "自动生成标签"
+
+msgid "Save as Draft"
+msgstr "保存为草稿"
+
+msgid "Publish"
+msgstr "发布"
+
+msgid "API key is required."
+msgstr "API 密钥不能为空。"
+
+msgid "API returned HTTP %1$d. %2$s"
+msgstr "API 返回 HTTP %1$d。%2$s"
+
+msgid "API returned HTTP %d."
+msgstr "API 返回 HTTP %d。"
+
+msgid "No model configured."
+msgstr "未配置模型。"
+
+msgid "API request failed. Please check your settings."
+msgstr "API 请求失败，请检查设置。"
+
+msgid "Empty response from API."
+msgstr "API 返回了空响应。"
+
+msgid "All models failed."
+msgstr "所有模型均失败。"
+
+msgid "Invalid category or topic."
+msgstr "无效的分类或主题。"
+
+msgid "Write a detailed, engaging section for the heading: \"%1$s\"\n\nFull outline context:\n%2$s\n\n%3$s\n\nWrite in a professional yet accessible tone. Use markdown formatting. The section should be 300-500 words."
+msgstr "为标题 \"%1$s\" 撰写一个详细、引人入胜的章节。\n\n完整大纲上下文：\n%2$s\n\n%3$s\n\n请使用专业但易于理解的语调，使用 Markdown 格式。章节字数应在 300-500 字。"
+
+msgid "Focus on these keywords: %s"
+msgstr "关注以下关键词：%s"
+
+msgid "Based on the following article, suggest 3 to 5 relevant tags as a JSON array of strings. Only return the JSON array, nothing else.\n\nArticle:\n%s"
+msgstr "根据以下文章，建议 3 到 5 个相关标签，以 JSON 字符串数组格式返回。只返回 JSON 数组，不要返回其他内容。\n\n文章：\n%s"
+
+msgid "Create a detailed article outline for the topic \"%1$s\" in the category \"%2$s\".%3$s%4$s\n\nReturn the outline in markdown format with H2 headings and brief bullet points under each. Include an introduction and conclusion section."
+msgstr "为分类 \"%2$s\" 下的主题 \"%1$s\" 创建详细的文章大纲。%3$s%4$s\n\n以 Markdown 格式返回大纲，使用 H2 标题和简短的要点。包含引言和结论部分。"
+
+msgid "Write a complete, well-structured article about \"%1$s\" in the category \"%2$s\".%3$s%4$s\n\nRequirements:\n- Use proper headings (H1 for title, H2 for sections)\n- Include an introduction and conclusion\n- Write in a professional yet engaging tone\n- Aim for 800-1500 words\n- Use markdown formatting"
+msgstr "撰写一篇关于分类 \"%2$s\" 下主题 \"%1$s\" 的完整、结构清晰的文章。%3$s%4$s\n\n要求：\n- 使用适当的标题（H1 为文章标题，H2 为章节标题）\n- 包含引言和结论\n- 使用专业且引人入胜的语调\n- 目标 800-1500 字\n- 使用 Markdown 格式"
+
+msgid "You are a professional content writer for a WordPress blog. Write clear, engaging, and SEO-friendly content. Always respond in the same language as the user's request."
+msgstr "你是一位专业的 WordPress 博客内容撰稿人。请撰写清晰、引人入胜且 SEO 友好的内容。始终使用与用户请求相同的语言回复。"
+
+msgid "Testing connection..."
+msgstr "正在测试连接..."
+
+msgid "Connection failed."
+msgstr "连接失败。"
+
+msgid "Fetching models..."
+msgstr "正在获取模型..."
+
+msgid "models found."
+msgstr "个模型。"
+
+msgid "No models found. You can select \"Custom\" to enter model ID manually."
+msgstr "未找到模型。您可以选择\"自定义\"手动输入模型 ID。"
+
+msgid "Generating..."
+msgstr "正在生成..."
+
+msgid "Generating outline..."
+msgstr "正在生成大纲..."
+
+msgid "Expanding section..."
+msgstr "正在展开章节..."
+
+msgid "Saving..."
+msgstr "正在保存..."
+
+msgid "Article saved!"
+msgstr "文章已保存！"
+
+msgid "Please select a category."
+msgstr "请选择分类。"
+
+msgid "Please select a topic."
+msgstr "请选择主题。"
+
+msgid "Delete this category and all its topics?"
+msgstr "删除此分类及其所有主题？"
+
+msgid "Delete this topic?"
+msgstr "删除此主题？"
+
+msgid "No H2 sections found in the outline."
+msgstr "大纲中未找到 H2 章节。"
+
+msgid "Generate content first."
+msgstr "请先生成内容。"
+
+msgid "Title and content are required."
+msgstr "标题和内容不能为空。"
+
+msgid "Request failed."
+msgstr "请求失败。"
+
+msgid "Error saving template."
+msgstr "保存模板时出错。"
+
+msgid "Error deleting."
+msgstr "删除时出错。"
+
+msgid "Failed to generate tags."
+msgstr "生成标签失败。"
+
+msgid "Additional instructions: "
+msgstr "附加说明："

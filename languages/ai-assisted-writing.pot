@@ -1,0 +1,308 @@
+# Translation template for AI-assisted Writing.
+# Copyright (C) 2026 Picasso Chan
+# This file is distributed under the GPL-2.0+ license.
+msgid ""
+msgstr ""
+"Project-Id-Version: AI-assisted Writing 1.0.0\n"
+"Report-Msgid-Bugs-To: https://github.com/picassochan/AI-assisted-Writing/issues\n"
+"POT-Creation-Date: 2026-04-19 00:00+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2026-MO-DA HO:MI+ZONE\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+
+msgid "AI-assisted Writing"
+msgstr ""
+
+msgid "Settings"
+msgstr ""
+
+msgid "Writing Assistant"
+msgstr ""
+
+msgid "AI-assisted Writing Settings"
+msgstr ""
+
+msgid "API Settings"
+msgstr ""
+
+msgid "AI Templates"
+msgstr ""
+
+msgid "Permission denied."
+msgstr ""
+
+msgid "Connection successful!"
+msgstr ""
+
+msgid "Failed to save template."
+msgstr ""
+
+msgid "Failed to delete."
+msgstr ""
+
+msgid "API URL"
+msgstr ""
+
+msgid "OpenAI-compatible API endpoint (e.g. https://api.openai.com)."
+msgstr ""
+
+msgid "API Key"
+msgstr ""
+
+msgid "Test Connection"
+msgstr ""
+
+msgid "Fetch Models"
+msgstr ""
+
+msgid "Primary Model"
+msgstr ""
+
+msgid "-- Select Model --"
+msgstr ""
+
+msgid "-- Custom --"
+msgstr ""
+
+msgid "Enter model ID"
+msgstr ""
+
+msgid "Backup Model"
+msgstr ""
+
+msgid "Used as fallback when the primary model fails."
+msgstr ""
+
+msgid "Add Category"
+msgstr ""
+
+msgid "Category Name"
+msgstr ""
+
+msgid "WordPress Category"
+msgstr ""
+
+msgid "-- Select --"
+msgstr ""
+
+msgid "No templates yet. Add a category above to get started."
+msgstr ""
+
+msgid "Unassigned"
+msgstr ""
+
+msgid "Edit"
+msgstr ""
+
+msgid "Delete"
+msgstr ""
+
+msgid "View Prompt"
+msgstr ""
+
+msgid "No topics yet."
+msgstr ""
+
+msgid "Add Topic"
+msgstr ""
+
+msgid "Topic Name"
+msgstr ""
+
+msgid "Prompt"
+msgstr ""
+
+msgid "Edit Category"
+msgstr ""
+
+msgid "Edit Topic"
+msgstr ""
+
+msgid "Save"
+msgstr ""
+
+msgid "Cancel"
+msgstr ""
+
+msgid "AI Writing Assistant"
+msgstr ""
+
+msgid "Please configure your API settings first."
+msgstr ""
+
+msgid "Go to Settings"
+msgstr ""
+
+msgid "Generate Article"
+msgstr ""
+
+msgid "Category"
+msgstr ""
+
+msgid "-- Select Category --"
+msgstr ""
+
+msgid "Topic"
+msgstr ""
+
+msgid "-- Select Topic --"
+msgstr ""
+
+msgid "Keywords (optional)"
+msgstr ""
+
+msgid "e.g. technology, AI trends"
+msgstr ""
+
+msgid "Generation Mode"
+msgstr ""
+
+msgid "One-shot (full article)"
+msgstr ""
+
+msgid "Step-by-step (outline first)"
+msgstr ""
+
+msgid "Generate"
+msgstr ""
+
+msgid "Outline"
+msgstr ""
+
+msgid "Expand All Sections"
+msgstr ""
+
+msgid "Article Editor"
+msgstr ""
+
+msgid "Title"
+msgstr ""
+
+msgid "Content"
+msgstr ""
+
+msgid "Tags"
+msgstr ""
+
+msgid "Comma-separated tags"
+msgstr ""
+
+msgid "Auto-generate Tags"
+msgstr ""
+
+msgid "Save as Draft"
+msgstr ""
+
+msgid "Publish"
+msgstr ""
+
+msgid "API key is required."
+msgstr ""
+
+msgid "API returned HTTP %1$d. %2$s"
+msgstr ""
+
+msgid "API returned HTTP %d."
+msgstr ""
+
+msgid "No model configured."
+msgstr ""
+
+msgid "API request failed. Please check your settings."
+msgstr ""
+
+msgid "Empty response from API."
+msgstr ""
+
+msgid "All models failed."
+msgstr ""
+
+msgid "Invalid category or topic."
+msgstr ""
+
+msgid "Write a detailed, engaging section for the heading: \"%1$s\"\n\nFull outline context:\n%2$s\n\n%3$s\n\nWrite in a professional yet accessible tone. Use markdown formatting. The section should be 300-500 words."
+msgstr ""
+
+msgid "Focus on these keywords: %s"
+msgstr ""
+
+msgid "Based on the following article, suggest 3 to 5 relevant tags as a JSON array of strings. Only return the JSON array, nothing else.\n\nArticle:\n%s"
+msgstr ""
+
+msgid "Create a detailed article outline for the topic \"%1$s\" in the category \"%2$s\".%3$s%4$s\n\nReturn the outline in markdown format with H2 headings and brief bullet points under each. Include an introduction and conclusion section."
+msgstr ""
+
+msgid "Write a complete, well-structured article about \"%1$s\" in the category \"%2$s\".%3$s%4$s\n\nRequirements:\n- Use proper headings (H1 for title, H2 for sections)\n- Include an introduction and conclusion\n- Write in a professional yet engaging tone\n- Aim for 800-1500 words\n- Use markdown formatting"
+msgstr ""
+
+msgid "You are a professional content writer for a WordPress blog. Write clear, engaging, and SEO-friendly content. Always respond in the same language as the user's request."
+msgstr ""
+
+msgid "Testing connection..."
+msgstr ""
+
+msgid "Connection failed."
+msgstr ""
+
+msgid "Fetching models..."
+msgstr ""
+
+msgid "models found."
+msgstr ""
+
+msgid "No models found. You can select \"Custom\" to enter model ID manually."
+msgstr ""
+
+msgid "Generating..."
+msgstr ""
+
+msgid "Generating outline..."
+msgstr ""
+
+msgid "Expanding section..."
+msgstr ""
+
+msgid "Saving..."
+msgstr ""
+
+msgid "Article saved!"
+msgstr ""
+
+msgid "Please select a category."
+msgstr ""
+
+msgid "Please select a topic."
+msgstr ""
+
+msgid "Delete this category and all its topics?"
+msgstr ""
+
+msgid "Delete this topic?"
+msgstr ""
+
+msgid "No H2 sections found in the outline."
+msgstr ""
+
+msgid "Generate content first."
+msgstr ""
+
+msgid "Title and content are required."
+msgstr ""
+
+msgid "Request failed."
+msgstr ""
+
+msgid "Error saving template."
+msgstr ""
+
+msgid "Error deleting."
+msgstr ""
+
+msgid "Failed to generate tags."
+msgstr ""
+
+msgid "Additional instructions: "
+msgstr ""

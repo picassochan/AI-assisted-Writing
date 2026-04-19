@@ -1,0 +1,310 @@
+# English translation for AI-assisted Writing.
+# Copyright (C) 2026 Picasso Chan
+# This file is distributed under the GPL-2.0+ license.
+msgid ""
+msgstr ""
+"Project-Id-Version: AI-assisted Writing 1.0.0\n"
+"Report-Msgid-Bugs-To: https://github.com/picassochan/AI-assisted-Writing/issues\n"
+"POT-Creation-Date: 2026-04-19 00:00+0000\n"
+"PO-Revision-Date: 2026-04-19 00:00+0000\n"
+"Last-Translator: Picasso Chan\n"
+"Language-Team: English\n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "AI-assisted Writing"
+msgstr "AI-assisted Writing"
+
+msgid "Settings"
+msgstr "Settings"
+
+msgid "Writing Assistant"
+msgstr "Writing Assistant"
+
+msgid "AI-assisted Writing Settings"
+msgstr "AI-assisted Writing Settings"
+
+msgid "API Settings"
+msgstr "API Settings"
+
+msgid "AI Templates"
+msgstr "AI Templates"
+
+msgid "Permission denied."
+msgstr "Permission denied."
+
+msgid "Connection successful!"
+msgstr "Connection successful!"
+
+msgid "Failed to save template."
+msgstr "Failed to save template."
+
+msgid "Failed to delete."
+msgstr "Failed to delete."
+
+msgid "API URL"
+msgstr "API URL"
+
+msgid "OpenAI-compatible API endpoint (e.g. https://api.openai.com)."
+msgstr "OpenAI-compatible API endpoint (e.g. https://api.openai.com)."
+
+msgid "API Key"
+msgstr "API Key"
+
+msgid "Test Connection"
+msgstr "Test Connection"
+
+msgid "Fetch Models"
+msgstr "Fetch Models"
+
+msgid "Primary Model"
+msgstr "Primary Model"
+
+msgid "-- Select Model --"
+msgstr "-- Select Model --"
+
+msgid "-- Custom --"
+msgstr "-- Custom --"
+
+msgid "Enter model ID"
+msgstr "Enter model ID"
+
+msgid "Backup Model"
+msgstr "Backup Model"
+
+msgid "Used as fallback when the primary model fails."
+msgstr "Used as fallback when the primary model fails."
+
+msgid "Add Category"
+msgstr "Add Category"
+
+msgid "Category Name"
+msgstr "Category Name"
+
+msgid "WordPress Category"
+msgstr "WordPress Category"
+
+msgid "-- Select --"
+msgstr "-- Select --"
+
+msgid "No templates yet. Add a category above to get started."
+msgstr "No templates yet. Add a category above to get started."
+
+msgid "Unassigned"
+msgstr "Unassigned"
+
+msgid "Edit"
+msgstr "Edit"
+
+msgid "Delete"
+msgstr "Delete"
+
+msgid "View Prompt"
+msgstr "View Prompt"
+
+msgid "No topics yet."
+msgstr "No topics yet."
+
+msgid "Add Topic"
+msgstr "Add Topic"
+
+msgid "Topic Name"
+msgstr "Topic Name"
+
+msgid "Prompt"
+msgstr "Prompt"
+
+msgid "Edit Category"
+msgstr "Edit Category"
+
+msgid "Edit Topic"
+msgstr "Edit Topic"
+
+msgid "Save"
+msgstr "Save"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "AI Writing Assistant"
+msgstr "AI Writing Assistant"
+
+msgid "Please configure your API settings first."
+msgstr "Please configure your API settings first."
+
+msgid "Go to Settings"
+msgstr "Go to Settings"
+
+msgid "Generate Article"
+msgstr "Generate Article"
+
+msgid "Category"
+msgstr "Category"
+
+msgid "-- Select Category --"
+msgstr "-- Select Category --"
+
+msgid "Topic"
+msgstr "Topic"
+
+msgid "-- Select Topic --"
+msgstr "-- Select Topic --"
+
+msgid "Keywords (optional)"
+msgstr "Keywords (optional)"
+
+msgid "e.g. technology, AI trends"
+msgstr "e.g. technology, AI trends"
+
+msgid "Generation Mode"
+msgstr "Generation Mode"
+
+msgid "One-shot (full article)"
+msgstr "One-shot (full article)"
+
+msgid "Step-by-step (outline first)"
+msgstr "Step-by-step (outline first)"
+
+msgid "Generate"
+msgstr "Generate"
+
+msgid "Outline"
+msgstr "Outline"
+
+msgid "Expand All Sections"
+msgstr "Expand All Sections"
+
+msgid "Article Editor"
+msgstr "Article Editor"
+
+msgid "Title"
+msgstr "Title"
+
+msgid "Content"
+msgstr "Content"
+
+msgid "Tags"
+msgstr "Tags"
+
+msgid "Comma-separated tags"
+msgstr "Comma-separated tags"
+
+msgid "Auto-generate Tags"
+msgstr "Auto-generate Tags"
+
+msgid "Save as Draft"
+msgstr "Save as Draft"
+
+msgid "Publish"
+msgstr "Publish"
+
+msgid "API key is required."
+msgstr "API key is required."
+
+msgid "API returned HTTP %1$d. %2$s"
+msgstr "API returned HTTP %1$d. %2$s"
+
+msgid "API returned HTTP %d."
+msgstr "API returned HTTP %d."
+
+msgid "No model configured."
+msgstr "No model configured."
+
+msgid "API request failed. Please check your settings."
+msgstr "API request failed. Please check your settings."
+
+msgid "Empty response from API."
+msgstr "Empty response from API."
+
+msgid "All models failed."
+msgstr "All models failed."
+
+msgid "Invalid category or topic."
+msgstr "Invalid category or topic."
+
+msgid "Write a detailed, engaging section for the heading: \"%1$s\"\n\nFull outline context:\n%2$s\n\n%3$s\n\nWrite in a professional yet accessible tone. Use markdown formatting. The section should be 300-500 words."
+msgstr "Write a detailed, engaging section for the heading: \"%1$s\"\n\nFull outline context:\n%2$s\n\n%3$s\n\nWrite in a professional yet accessible tone. Use markdown formatting. The section should be 300-500 words."
+
+msgid "Focus on these keywords: %s"
+msgstr "Focus on these keywords: %s"
+
+msgid "Based on the following article, suggest 3 to 5 relevant tags as a JSON array of strings. Only return the JSON array, nothing else.\n\nArticle:\n%s"
+msgstr "Based on the following article, suggest 3 to 5 relevant tags as a JSON array of strings. Only return the JSON array, nothing else.\n\nArticle:\n%s"
+
+msgid "Create a detailed article outline for the topic \"%1$s\" in the category \"%2$s\".%3$s%4$s\n\nReturn the outline in markdown format with H2 headings and brief bullet points under each. Include an introduction and conclusion section."
+msgstr "Create a detailed article outline for the topic \"%1$s\" in the category \"%2$s\".%3$s%4$s\n\nReturn the outline in markdown format with H2 headings and brief bullet points under each. Include an introduction and conclusion section."
+
+msgid "Write a complete, well-structured article about \"%1$s\" in the category \"%2$s\".%3$s%4$s\n\nRequirements:\n- Use proper headings (H1 for title, H2 for sections)\n- Include an introduction and conclusion\n- Write in a professional yet engaging tone\n- Aim for 800-1500 words\n- Use markdown formatting"
+msgstr "Write a complete, well-structured article about \"%1$s\" in the category \"%2$s\".%3$s%4$s\n\nRequirements:\n- Use proper headings (H1 for title, H2 for sections)\n- Include an introduction and conclusion\n- Write in a professional yet engaging tone\n- Aim for 800-1500 words\n- Use markdown formatting"
+
+msgid "You are a professional content writer for a WordPress blog. Write clear, engaging, and SEO-friendly content. Always respond in the same language as the user's request."
+msgstr "You are a professional content writer for a WordPress blog. Write clear, engaging, and SEO-friendly content. Always respond in the same language as the user's request."
+
+msgid "Testing connection..."
+msgstr "Testing connection..."
+
+msgid "Connection failed."
+msgstr "Connection failed."
+
+msgid "Fetching models..."
+msgstr "Fetching models..."
+
+msgid "models found."
+msgstr "models found."
+
+msgid "No models found. You can select \"Custom\" to enter model ID manually."
+msgstr "No models found. You can select \"Custom\" to enter model ID manually."
+
+msgid "Generating..."
+msgstr "Generating..."
+
+msgid "Generating outline..."
+msgstr "Generating outline..."
+
+msgid "Expanding section..."
+msgstr "Expanding section..."
+
+msgid "Saving..."
+msgstr "Saving..."
+
+msgid "Article saved!"
+msgstr "Article saved!"
+
+msgid "Please select a category."
+msgstr "Please select a category."
+
+msgid "Please select a topic."
+msgstr "Please select a topic."
+
+msgid "Delete this category and all its topics?"
+msgstr "Delete this category and all its topics?"
+
+msgid "Delete this topic?"
+msgstr "Delete this topic?"
+
+msgid "No H2 sections found in the outline."
+msgstr "No H2 sections found in the outline."
+
+msgid "Generate content first."
+msgstr "Generate content first."
+
+msgid "Title and content are required."
+msgstr "Title and content are required."
+
+msgid "Request failed."
+msgstr "Request failed."
+
+msgid "Error saving template."
+msgstr "Error saving template."
+
+msgid "Error deleting."
+msgstr "Error deleting."
+
+msgid "Failed to generate tags."
+msgstr "Failed to generate tags."
+
+msgid "Additional instructions: "
+msgstr "Additional instructions: "
