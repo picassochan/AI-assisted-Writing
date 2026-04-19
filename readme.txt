@@ -69,25 +69,10 @@ The plugin uses Server-Sent Events (SSE) to stream the AI response in real-time.
 
 == Changelog
 
-= 1.1.4 =
-* Add AI SEO metadata generation (title, meta description, focus keywords, OG tags, slug)
-* Add SEO plugin integration for Rank Math, Yoast SEO, and All in One SEO
-* Add per-article model selection dropdown on Writing Assistant page
-* Add red Stop button to abort streaming generation
-* Add daily model list cache refresh via WP-Cron
-* Add debug mode toggle
-* Add model cache population in settings page dropdowns
-* Fix model dropdown "Array to string conversion" warning
-
-= 1.0.0 =
+= 0.1.0 =
 * Initial release
 * OpenAI-compatible API integration
 * Template management (categories, topics, prompts)
 * One-shot and stream article generation
 * Auto tag generation
 * Multi-language support (English, Chinese)
-
-== Upgrade Notice
-
-= 1.1.4 =
-Adds AI SEO generation, per-article model selection, streaming stop button, and daily model cache refresh. Update recommended for all users.
