@@ -48,6 +48,13 @@ $debug_mode = ! empty( $settings['debug_mode'] );
 				</p>
 
 				<p>
+					<label for="aiaw-select-model"><?php esc_html_e( 'Model', 'ai-assisted-writing' ); ?></label><br />
+					<select id="aiaw-select-model" class="regular-text">
+						<option value=""><?php esc_html_e( 'Default (Primary)', 'ai-assisted-writing' ); ?></option>
+					</select>
+				</p>
+
+				<p>
 					<label for="aiaw-input-title"><?php esc_html_e( 'Title', 'ai-assisted-writing' ); ?></label><br />
 					<input type="text" id="aiaw-input-title" class="large-text"
 						placeholder="<?php esc_attr_e( 'Enter article title', 'ai-assisted-writing' ); ?>" />
@@ -101,6 +108,7 @@ $debug_mode = ! empty( $settings['debug_mode'] );
 				</p>
 			</div>
 
+<?php if ( $seo_enabled ) : ?>
 			<!-- SEO Settings -->
 			<div class="aiaw-card aiaw-seo-section">
 				<h3><?php esc_html_e( 'SEO Settings', 'ai-assisted-writing' ); ?>
@@ -145,6 +153,7 @@ $debug_mode = ! empty( $settings['debug_mode'] );
 					<input type="text" id="aiaw-seo-slug" class="large-text" />
 				</p>
 			</div>
+<?php endif; ?>
 		</div>
 	</div>
 

@@ -98,7 +98,11 @@ class AIAW_Core {
 			'ajax_url'  => admin_url( 'admin-ajax.php' ),
 			'nonce'     => wp_create_nonce( 'aiaw_nonce' ),
 			'templates' => $templates,
-			'debug'     => ! empty( $settings['debug_mode'] ),
+			'debug'      => ! empty( $settings['debug_mode'] ),
+			'seo_enabled' => ! empty( $settings['seo_enabled'] ),
+			'models'      => get_transient( 'aiaw_models_cache' ) ?: array(),
+			'primary_model' => $settings['primary_model'] ?? '',
+			'backup_model'  => $settings['backup_model'] ?? '',
 			'hook'      => $hook,
 			'strings'   => array(
 				'testing'           => __( 'Testing connection...', 'ai-assisted-writing' ),

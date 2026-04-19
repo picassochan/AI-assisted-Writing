@@ -33,6 +33,7 @@
 			this.bindApiSettings();
 			this.bindTemplateManager();
 			this.bindWritingAssistant();
+			this.populateModelDropdown();
 		},
 
 		// ========================================
@@ -393,7 +394,8 @@
 				category_id: catId,
 				template_id: templateId || '',
 				title: title,
-				description: $('#aiaw-input-description').val()
+				description: $('#aiaw-input-description').val(),
+					model: $('#aiaw-select-model').val() || ''
 			});
 
 			self.dlog('Stream: starting fetch to', aiaw.ajax_url);
@@ -431,7 +433,7 @@
 						// Auto-generate SEO
 						var seoTitle = $articleTitle.val();
 						var seoContent = $content.val();
-						if (seoTitle && seoContent) { self.generateSEO(seoTitle, seoContent); }
+						if (aiaw.seo_enabled && seoTitle && seoContent) { self.generateSEO(seoTitle, seoContent); }
 						return;
 					}
 
@@ -458,7 +460,7 @@
 							// Auto-generate SEO
 							var seoTitle = $articleTitle.val();
 							var seoContent = $content.val();
-							if (seoTitle && seoContent) { self.generateSEO(seoTitle, seoContent); }
+							if (aiaw.seo_enabled && seoTitle && seoContent) { self.generateSEO(seoTitle, seoContent); }
 							return;
 						} else if (data.type === 'error') {
 							self.dlog('Stream: error from server —', data.message);
@@ -493,7 +495,8 @@
 				category_id: catId,
 				template_id: templateId || '',
 				title: title,
-				description: $('#aiaw-input-description').val()
+				description: $('#aiaw-input-description').val(),
+				model: $('#aiaw-select-model').val() || ''
 			}, function(response) {
 				self.dlog('AJAX response:', JSON.stringify(response).substring(0, 500));
 				$btn.prop('disabled', false);
@@ -508,7 +511,7 @@
 					// Auto-generate SEO
 					var seoTitle = $articleTitle.val();
 					var seoContent = $content.val();
-					if (seoTitle && seoContent) { self.generateSEO(seoTitle, seoContent); }
+					if (aiaw.seo_enabled && seoTitle && seoContent) { self.generateSEO(seoTitle, seoContent); }
 				} else {
 					self.dlog('AJAX error:', response.data.message);
 					alert(response.data.message);
@@ -555,7 +558,8 @@
 				action: 'aiaw_generate_seo',
 				nonce: aiaw.nonce,
 				title: title,
-				content: content
+				content: content,
+				model: $('#aiaw-select-model').val() || ''
 			}, function(response) {
 				$btn.prop('disabled', false);
 				if (response.success && response.data) {
@@ -585,6 +589,24 @@
 				$(counterSelector).css('color', '#d63638');
 			} else {
 				$(counterSelector).css('color', '');
+			}
+		},
+
+		populateModelDropdown: function() {
+			var models = aiaw.models || [];
+			var primary = aiaw.primary_model || '';
+			var backup = aiaw.backup_model || '';
+			var $select = $('#aiaw-select-model');
+
+			for (var i = 0; i < models.length; i++) {
+				$select.append($('<option>').val(models[i].id).text(models[i].id));
+			}
+
+			if (primary && !$select.find('option[value="' + primary + '"]').length) {
+				$select.append($('<option>').val(primary).text(primary));
+			}
+			if (backup && !$select.find('option[value="' + backup + '"]').length) {
+				$select.append($('<option>').val(backup).text(backup));
 			}
 		},
 

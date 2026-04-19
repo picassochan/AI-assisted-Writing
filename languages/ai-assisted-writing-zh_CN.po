@@ -329,3 +329,24 @@ msgstr "SEO 别名"
 
 msgid "Title and content are required for SEO generation."
 msgstr "SEO 生成需要标题和内容。"
+
+msgid "SEO Integration"
+msgstr "SEO 集成"
+
+msgid "Enable AI SEO metadata generation"
+msgstr "启用 AI SEO 元数据生成"
+
+msgid "Detected: %s — SEO data will be saved to this plugin."
+msgstr "检测到：%s — SEO 数据将保存到此插件。"
+
+msgid "No SEO plugin detected. Install Rank Math, Yoast SEO, or All in One SEO for best results."
+msgstr "未检测到 SEO 插件。建议安装 Rank Math、Yoast SEO 或 All in One SEO。"
+
+msgid "SEO generation is disabled in settings."
+msgstr "SEO 生成已在设置中禁用。"
+
+msgid "Model"
+msgstr "模型"
+
+msgid "Default (Primary)"
+msgstr "默认（主模型）"

@@ -256,21 +256,28 @@ class AIAW_Generator {
 			wp_send_json_error( array( 'message' => $post_id->get_error_message() ) );
 		}
 
-		// Save Rank Math SEO meta.
-		if ( ! empty( $seo_title ) ) {
-			update_post_meta( $post_id, 'rank_math_title', $seo_title );
-		}
-		if ( ! empty( $meta_desc ) ) {
-			update_post_meta( $post_id, 'rank_math_description', $meta_desc );
-		}
-		if ( ! empty( $focus_kw ) ) {
-			update_post_meta( $post_id, 'rank_math_focus_keyword', $focus_kw );
-		}
-		if ( ! empty( $og_title ) ) {
-			update_post_meta( $post_id, 'rank_math_facebook_title', $og_title );
-		}
-		if ( ! empty( $og_desc ) ) {
-			update_post_meta( $post_id, 'rank_math_facebook_description', $og_desc );
+		// Save SEO meta to detected plugin.
+		$seo_plugin = AIAW_Settings::detect_seo_plugin();
+		if ( $seo_plugin && ! empty( $seo_title ) ) {
+			switch ( $seo_plugin ) {
+				case 'rank_math':
+					update_post_meta( $post_id, 'rank_math_title', $seo_title );
+					update_post_meta( $post_id, 'rank_math_description', $meta_desc );
+					update_post_meta( $post_id, 'rank_math_focus_keyword', $focus_kw );
+					update_post_meta( $post_id, 'rank_math_facebook_title', $og_title );
+					update_post_meta( $post_id, 'rank_math_facebook_description', $og_desc );
+					break;
+				case 'yoast':
+					update_post_meta( $post_id, '_yoast_wpseo_title', $seo_title );
+					update_post_meta( $post_id, '_yoast_wpseo_metadesc', $meta_desc );
+					update_post_meta( $post_id, '_yoast_wpseo_focuskw', $focus_kw );
+					break;
+				case 'aioseo':
+					update_post_meta( $post_id, '_aioseo_title', $seo_title );
+					update_post_meta( $post_id, '_aioseo_description', $meta_desc );
+					update_post_meta( $post_id, '_aioseo_keywords', $focus_kw );
+					break;
+			}
 		}
 
 		wp_send_json_success( array(
@@ -288,6 +295,11 @@ class AIAW_Generator {
 		$title   = sanitize_text_field( wp_unslash( $_POST['title'] ) );
 		$content = sanitize_textarea_field( wp_unslash( $_POST['content'] ) );
 
+		$settings = get_option( 'aiaw_api_settings', array() );
+		if ( empty( $settings['seo_enabled'] ) ) {
+			wp_send_json_error( array( 'message' => __( 'SEO generation is disabled in settings.', 'ai-assisted-writing' ) ) );
+		}
+
 		if ( empty( $title ) || empty( $content ) ) {
 			wp_send_json_error( array( 'message' => __( 'Title and content are required for SEO generation.', 'ai-assisted-writing' ) ) );
 		}
@@ -295,7 +307,8 @@ class AIAW_Generator {
 		$prompt   = $this->build_seo_prompt( $title, $content );
 		$messages = $this->build_seo_messages( $prompt );
 
-		$result = AIAW_API::get_instance()->generate( $messages );
+		$seo_model = isset( $_POST['model'] ) ? sanitize_text_field( wp_unslash( $_POST['model'] ) ) : '';
+		$result = AIAW_API::get_instance()->generate( $messages, $seo_model ?: null );
 
 		if ( is_wp_error( $result ) ) {
 			wp_send_json_error( array( 'message' => $result->get_error_message() ) );

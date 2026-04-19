@@ -327,3 +327,24 @@ msgstr ""
 
 msgid "Title and content are required for SEO generation."
 msgstr ""
+
+msgid "SEO Integration"
+msgstr ""
+
+msgid "Enable AI SEO metadata generation"
+msgstr ""
+
+msgid "Detected: %s — SEO data will be saved to this plugin."
+msgstr ""
+
+msgid "No SEO plugin detected. Install Rank Math, Yoast SEO, or All in One SEO for best results."
+msgstr ""
+
+msgid "SEO generation is disabled in settings."
+msgstr ""
+
+msgid "Model"
+msgstr ""
+
+msgid "Default (Primary)"
+msgstr ""

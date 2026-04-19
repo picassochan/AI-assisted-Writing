@@ -107,5 +107,38 @@ defined( 'ABSPATH' ) || exit;
 		</tr>
 	</table>
 
+	<hr />
+
+	<table class="form-table" role="presentation">
+		<tr>
+			<th scope="row">
+				<?php esc_html_e( 'SEO Integration', 'ai-assisted-writing' ); ?>
+			</th>
+			<td>
+				<label>
+					<input type="checkbox" id="aiaw_seo_enabled"
+						name="aiaw_api_settings[seo_enabled]"
+						value="1" <?php checked( ! empty( $settings['seo_enabled'] ) ); ?> />
+					<?php esc_html_e( 'Enable AI SEO metadata generation', 'ai-assisted-writing' ); ?>
+				</label>
+				<?php
+				$detected = AIAW_Settings::detect_seo_plugin();
+				if ( $detected ) :
+					$plugin_name = AIAW_Settings::get_seo_plugin_name( $detected );
+				?>
+					<p class="description" style="margin-top:6px;">
+						<span class="dashicons dashicons-yes-alt" style="color:#00a32a;"></span>
+						<?php printf( esc_html__( 'Detected: %s — SEO data will be saved to this plugin.', 'ai-assisted-writing' ), '<strong>' . esc_html( $plugin_name ) . '</strong>' ); ?>
+					</p>
+				<?php else : ?>
+					<p class="description" style="margin-top:6px;">
+						<span class="dashicons dashicons-warning" style="color:#dba617;"></span>
+						<?php esc_html_e( 'No SEO plugin detected. Install Rank Math, Yoast SEO, or All in One SEO for best results.', 'ai-assisted-writing' ); ?>
+					</p>
+				<?php endif; ?>
+			</td>
+		</tr>
+	</table>
+
 	<?php submit_button(); ?>
 </form>

@@ -72,6 +72,7 @@ class AIAW_Settings {
 		$clean['primary_model'] = sanitize_text_field( $input['primary_model'] ?? '' );
 		$clean['backup_model']  = sanitize_text_field( $input['backup_model'] ?? '' );
 		$clean['debug_mode']   = ! empty( $input['debug_mode'] ) ? 1 : 0;
+		$clean['seo_enabled']  = ! empty( $input['seo_enabled'] ) ? 1 : 0;
 		return $clean;
 	}
 
@@ -108,6 +109,7 @@ class AIAW_Settings {
 			wp_send_json_error( array( 'message' => $result->get_error_message() ) );
 		}
 
+		set_transient( 'aiaw_models_cache', $result, DAY_IN_SECONDS );
 		wp_send_json_success( array( 'models' => $result ) );
 	}
 
@@ -209,6 +211,34 @@ class AIAW_Settings {
 		wp_send_json_success( array( 'topics' => $topics ) );
 	}
 
+	/**
+	 * Detect active SEO plugin.
+	 */
+	public static function detect_seo_plugin() {
+		if ( defined( 'RANK_MATH_VERSION' ) || class_exists( 'RankMath' ) ) {
+			return 'rank_math';
+		}
+		if ( defined( 'WPSEO_VERSION' ) ) {
+			return 'yoast';
+		}
+		if ( class_exists( 'AIOSEO' ) || defined( 'AIOSEO_PLUGIN_VERSION' ) ) {
+			return 'aioseo';
+		}
+		return '';
+	}
+
+	/**
+	 * Get SEO plugin display name.
+	 */
+	public static function get_seo_plugin_name( $slug ) {
+		$names = array(
+			'rank_math' => 'Rank Math',
+			'yoast'     => 'Yoast SEO',
+			'aioseo'    => 'All in One SEO',
+		);
+		return isset( $names[ $slug ] ) ? $names[ $slug ] : '';
+	}
+
 	public function render_settings_page() {
 		if ( ! current_user_can( 'manage_options' ) ) {
 			return;
@@ -247,6 +277,8 @@ class AIAW_Settings {
 		$categories  = get_categories( array( 'hide_empty' => false ) );
 		$settings    = get_option( 'aiaw_api_settings', array() );
 		$has_api_key = ! empty( $settings['api_key'] );
+		$seo_enabled = ! empty( $settings['seo_enabled'] );
+		$seo_plugin  = self::detect_seo_plugin();
 
 		include AIAW_PLUGIN_PATH . 'admin/views/writing-assistant.php';
 	}
