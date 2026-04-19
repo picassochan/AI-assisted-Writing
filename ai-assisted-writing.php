@@ -2,7 +2,7 @@
 /**
  * Plugin Name: AI-assisted Writing
  * Plugin URI:  https://github.com/picassochan/AI-assisted-Writing
- * Description: AI-powered article generation for WordPress using OpenAI-compatible APIs.
+ * Description: AI-powered article generation and SEO metadata for WordPress using OpenAI-compatible APIs, with streaming, model fallback, and SEO plugin integration.
  * Version:     1.1.4
  * Author:      Picasso Chan
  * Author URI:  https://github.com/picassochan/AI-assisted-Writing
