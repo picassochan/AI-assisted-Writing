@@ -124,6 +124,7 @@ class AIAW_Core {
 				'select_model'      => __( '-- Select Model --', 'ai-assisted-writing' ),
 				'custom_model'      => __( '-- Custom --', 'ai-assisted-writing' ),
 				'stream_error'      => __( 'Generation error.', 'ai-assisted-writing' ),
+					'loading'           => __( 'Loading...', 'ai-assisted-writing' ),
 			),
 		) );
 	}

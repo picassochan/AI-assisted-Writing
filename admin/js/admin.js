@@ -247,9 +247,9 @@
 		bindWritingAssistant: function() {
 			var self = this;
 
-			// Category change -> populate matching AI templates
+			// Category change -> AJAX load matching AI templates
 			$('#aiaw-select-category').on('change', function() {
-				var catId = parseInt($(this).val(), 10);
+				var catId = $(this).val();
 				var $template = $('#aiaw-select-template');
 				$template.find('option:not(:first)').remove();
 
@@ -259,25 +259,30 @@
 				}
 
 				$template.prop('disabled', false);
-				var found = false;
-				var templates = aiaw.templates || [];
-				for (var i = 0; i < templates.length; i++) {
-					var cat = templates[i];
-					if (parseInt(cat.wp_category_id, 10) === catId && cat.topics && cat.topics.length > 0) {
-						for (var j = 0; j < cat.topics.length; j++) {
-							var t = cat.topics[j];
-							$template.append($('<option>').val(t.id).text(t.name));
-							found = true;
-						}
-					}
-				}
+				$template.append($('<option>').val('').text(aiaw.strings.loading || 'Loading...'));
 
-				if (!found) {
+				$.post(aiaw.ajax_url, {
+					action: 'aiaw_get_templates',
+					nonce: aiaw.nonce,
+					category_id: catId
+				}, function(response) {
+					$template.find('option:not(:first)').remove();
+
+					if (response.success && response.data.topics && response.data.topics.length > 0) {
+						for (var i = 0; i < response.data.topics.length; i++) {
+							var t = response.data.topics[i];
+							$template.append($('<option>').val(t.id).text(t.name));
+						}
+					} else {
+						$template.append($('<option>').val('').text(aiaw.strings.no_templates));
+					}
+				}).fail(function() {
+					$template.find('option:not(:first)').remove();
 					$template.append($('<option>').val('').text(aiaw.strings.no_templates));
-				}
+				});
 			});
 
-			// Generate button (streaming)
+			// Generate button (streaming with fallback)
 			$('#aiaw-generate-btn').on('click', function() {
 				self.generateArticle();
 			});
@@ -299,6 +304,7 @@
 			if (!catId) { alert(aiaw.strings.select_cat); return; }
 			if (!title) { alert(aiaw.strings.enter_title); return; }
 
+			var self = this;
 			var $status = $('#aiaw-generate-status');
 			var $content = $('#aiaw-article-content');
 			var $articleTitle = $('#aiaw-article-title');
@@ -310,6 +316,14 @@
 			$articleTitle.val(title);
 			$('#aiaw-article-cat-id').val(catId);
 
+			// Try streaming first
+			self.generateStream(catId, title, templateId, $btn, $status, $content, $articleTitle);
+		},
+
+		generateStream: function(catId, title, templateId, $btn, $status, $content, $articleTitle) {
+			var self = this;
+			var fullContent = '';
+
 			var params = new URLSearchParams({
 				action: 'aiaw_generate_stream',
 				nonce: aiaw.nonce,
@@ -319,25 +333,25 @@
 				description: $('#aiaw-input-description').val()
 			});
 
-			var self = this;
-			var fullContent = '';
-
 			fetch(aiaw.ajax_url, {
 				method: 'POST',
+				credentials: 'same-origin',
 				headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
 				body: params.toString()
 			}).then(function(response) {
 				if (!response.ok) {
-					throw new Error('HTTP ' + response.status);
+					// Non-200 response - fall back to AJAX
+					self.generateAjax(catId, title, templateId, $btn, $status, $content, $articleTitle);
+					return;
 				}
+
 				var reader = response.body.getReader();
 				var decoder = new TextDecoder();
 				var buffer = '';
 
 				function processChunk(result) {
 					if (result.done) {
-						// Stream finished - finalize.
-						self.finalizeGeneratedContent(fullContent, title);
+						self.finalizeGeneratedContent(fullContent, title, $content, $articleTitle);
 						$status.text('');
 						$btn.prop('disabled', false);
 						return;
@@ -345,7 +359,7 @@
 
 					buffer += decoder.decode(result.value, { stream: true });
 					var lines = buffer.split('\n');
-					buffer = lines.pop(); // Keep incomplete line.
+					buffer = lines.pop();
 
 					for (var i = 0; i < lines.length; i++) {
 						var line = lines[i].trim();
@@ -359,14 +373,14 @@
 							$content.val(fullContent);
 							$content.scrollTop($content[0].scrollHeight);
 						} else if (data.type === 'done') {
-							self.finalizeGeneratedContent(fullContent, title);
+							self.finalizeGeneratedContent(fullContent, title, $content, $articleTitle);
 							$status.text('');
 							$btn.prop('disabled', false);
 							return;
 						} else if (data.type === 'error') {
-							alert(data.message);
 							$status.text('');
 							$btn.prop('disabled', false);
+							alert(data.message);
 							return;
 						}
 					}
@@ -375,27 +389,60 @@
 				}
 
 				return reader.read().then(processChunk);
-			}).catch(function(err) {
-				alert(aiaw.strings.stream_error + ' ' + err.message);
-				$status.text('');
+			}).catch(function() {
+				// Fetch failed (no ReadableStream support or network error) - fall back to AJAX
+				self.generateAjax(catId, title, templateId, $btn, $status, $content, $articleTitle);
+			});
+		},
+
+		/**
+		 * Fallback: non-streaming AJAX generation.
+		 */
+		generateAjax: function(catId, title, templateId, $btn, $status, $content, $articleTitle) {
+			var self = this;
+			$status.text(aiaw.strings.generating);
+
+			$.post(aiaw.ajax_url, {
+				action: 'aiaw_generate',
+				nonce: aiaw.nonce,
+				category_id: catId,
+				template_id: templateId || '',
+				title: title,
+				description: $('#aiaw-input-description').val()
+			}, function(response) {
 				$btn.prop('disabled', false);
+				$status.text('');
+				if (response.success) {
+					$articleTitle.val(response.data.title || title);
+					$content.val(response.data.content || '');
+					$('#aiaw-article-cat-id').val(response.data.category_id);
+					if (response.data.tags && response.data.tags.length > 0) {
+						$('#aiaw-article-tags').val(response.data.tags.join(', '));
+					}
+				} else {
+					alert(response.data.message);
+				}
+			}).fail(function() {
+				$btn.prop('disabled', false);
+				$status.text('');
+				alert(aiaw.strings.req_failed);
 			});
 		},
 
 		/**
 		 * After streaming finishes, extract title from H1 if present.
 		 */
-		finalizeGeneratedContent: function(content, fallbackTitle) {
+		finalizeGeneratedContent: function(content, fallbackTitle, $content, $articleTitle) {
 			if (!content) return;
 
 			var titleMatch = content.match(/^#\s+(.+)$/m);
 			if (titleMatch) {
-				$('#aiaw-article-title').val(titleMatch[1]);
+				$articleTitle.val(titleMatch[1]);
 				var cleaned = content.replace(/^#\s+.+[\r]?\n?/, '').trim();
-				$('#aiaw-article-content').val(cleaned);
+				$content.val(cleaned);
 			} else {
-				$('#aiaw-article-title').val(fallbackTitle);
-				$('#aiaw-article-content').val(content);
+				$articleTitle.val(fallbackTitle);
+				$content.val(content);
 			}
 		},
 

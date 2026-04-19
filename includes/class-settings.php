@@ -26,6 +26,7 @@ class AIAW_Settings {
 		add_action( 'wp_ajax_aiaw_fetch_models', array( $this, 'ajax_fetch_models' ) );
 		add_action( 'wp_ajax_aiaw_save_template', array( $this, 'ajax_save_template' ) );
 		add_action( 'wp_ajax_aiaw_delete_template', array( $this, 'ajax_delete_template' ) );
+		add_action( 'wp_ajax_aiaw_get_templates', array( $this, 'ajax_get_templates' ) );
 	}
 
 	public function register_menus() {
@@ -184,6 +185,27 @@ class AIAW_Settings {
 		}
 
 		wp_send_json_error( array( 'message' => __( 'Failed to delete.', 'ai-assisted-writing' ) ) );
+	}
+
+	public function ajax_get_templates() {
+		check_ajax_referer( 'aiaw_nonce', 'nonce' );
+		if ( ! current_user_can( 'edit_posts' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'ai-assisted-writing' ) ) );
+		}
+
+		$category_id = absint( $_POST['category_id'] );
+		$all         = AIAW_Template::get_instance()->get_all();
+		$topics      = array();
+
+		foreach ( $all as $cat ) {
+			if ( absint( $cat['wp_category_id'] ) === $category_id && ! empty( $cat['topics'] ) ) {
+				foreach ( $cat['topics'] as $t ) {
+					$topics[] = array( 'id' => $t['id'], 'name' => $t['name'] );
+				}
+			}
+		}
+
+		wp_send_json_success( array( 'topics' => $topics ) );
 	}
 
 	public function render_settings_page() {
