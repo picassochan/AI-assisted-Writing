@@ -110,6 +110,12 @@ $debug_mode = ! empty( $settings['debug_mode'] );
 	<div class="aiaw-debug-panel" style="margin-top:20px;">
 		<div class="aiaw-card" style="border-color:#dba617;">
 			<h3 style="color:#dba617;">Debug Panel</h3>
+			<p>
+				<strong>PHP screen_id:</strong> <code><?php echo esc_html( get_current_screen()->id ); ?></code>
+				&nbsp; <strong>hook_suffix:</strong> <code><?php echo esc_html( $GLOBALS['hook_suffix'] ?? 'N/A' ); ?></code>
+				&nbsp; <strong>_GET[page]:</strong> <code><?php echo esc_html( isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : 'N/A' ); ?></code>
+			</p>
+			<p><strong>JS loaded?</strong> <code id="aiaw-debug-js-status" style="color:red;">NO</code></p>
 			<p><strong>Templates from DB:</strong> <code id="aiaw-debug-templates" style="display:block;white-space:pre-wrap;max-height:200px;overflow:auto;background:#f0f0f1;padding:8px;font-size:12px;"><?php echo esc_html( wp_json_encode( $templates, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE ) ); ?></code></p>
 			<p><strong>WP Categories:</strong> <code id="aiaw-debug-categories" style="display:block;white-space:pre-wrap;max-height:150px;overflow:auto;background:#f0f0f1;padding:8px;font-size:12px;"><?php
 				$cat_debug = array();
@@ -118,7 +124,7 @@ $debug_mode = ! empty( $settings['debug_mode'] );
 				}
 				echo esc_html( wp_json_encode( $cat_debug, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE ) );
 			?></code></p>
-			<p><strong>JS aiaw.templates:</strong> <code id="aiaw-debug-js-templates" style="display:block;white-space:pre-wrap;max-height:200px;overflow:auto;background:#e0f0e0;padding:8px;font-size:12px;">(waiting for JS...)</code></p>
+			<p><strong>JS aiaw object:</strong> <code id="aiaw-debug-js-templates" style="display:block;white-space:pre-wrap;max-height:200px;overflow:auto;background:#e0f0e0;padding:8px;font-size:12px;">(waiting for JS...)</code></p>
 			<p><strong>Log:</strong></p>
 			<pre id="aiaw-debug-log" style="background:#1d2327;color:#50c878;padding:12px;font-size:12px;max-height:300px;overflow:auto;white-space:pre-wrap;"></pre>
 		</div>

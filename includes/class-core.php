@@ -33,7 +33,6 @@ class AIAW_Core {
 	}
 
 	public function activate() {
-		// Migrate from old option keys before creating defaults
 		$this->migrate_old_options();
 
 		$defaults = array(
@@ -71,13 +70,9 @@ class AIAW_Core {
 	}
 
 	public function enqueue_admin_assets( $hook ) {
-		$screen_id = get_current_screen()->id;
-		$plugin_screens = array(
-			'toplevel_page_ai-assisted-writing',
-			'ai-assisted-writing_page_ai-assisted-writing-writing',
-		);
-
-		if ( ! in_array( $screen_id, $plugin_screens, true ) ) {
+		// Match by $_GET['page'] — the most reliable method.
+		$page = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : '';
+		if ( 'ai-assisted-writing' !== $page && 'ai-assisted-writing-writing' !== $page ) {
 			return;
 		}
 
@@ -96,13 +91,15 @@ class AIAW_Core {
 			true
 		);
 
+		$settings  = get_option( 'aiaw_api_settings', array() );
 		$templates = AIAW_Template::get_instance()->get_all();
 
 		wp_localize_script( 'aiaw-admin', 'aiaw', array(
 			'ajax_url'  => admin_url( 'admin-ajax.php' ),
 			'nonce'     => wp_create_nonce( 'aiaw_nonce' ),
 			'templates' => $templates,
-				'debug'     => ! empty( $settings['debug_mode'] ),
+			'debug'     => ! empty( $settings['debug_mode'] ),
+			'hook'      => $hook,
 			'strings'   => array(
 				'testing'           => __( 'Testing connection...', 'ai-assisted-writing' ),
 				'success'           => __( 'Connection successful!', 'ai-assisted-writing' ),
@@ -125,7 +122,7 @@ class AIAW_Core {
 				'select_model'      => __( '-- Select Model --', 'ai-assisted-writing' ),
 				'custom_model'      => __( '-- Custom --', 'ai-assisted-writing' ),
 				'stream_error'      => __( 'Generation error.', 'ai-assisted-writing' ),
-					'loading'           => __( 'Loading...', 'ai-assisted-writing' ),
+				'loading'           => __( 'Loading...', 'ai-assisted-writing' ),
 			),
 		) );
 	}

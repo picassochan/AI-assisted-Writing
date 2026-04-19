@@ -13,7 +13,3 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 
 delete_option( 'aiaw_api_settings' );
 delete_option( 'aiaw_templates' );
-
-// Clean up legacy option keys
-delete_option( 'wpaiwriter_api_settings' );
-delete_option( 'wpaiwriter_templates' );

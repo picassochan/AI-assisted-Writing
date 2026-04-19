@@ -17,6 +17,9 @@
 		},
 
 		init: function() {
+			var $jsStatus = $( '#aiaw-debug-js-status' );
+			if ($jsStatus.length) { $jsStatus.text('YES').css('color','green'); }
+
 			this.debug = !!(aiaw && aiaw.debug);
 			this.dlog('init — debug mode ON');
 			this.dlog('aiaw.templates =', JSON.stringify(aiaw.templates || []));
