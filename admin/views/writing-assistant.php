@@ -100,6 +100,51 @@ $debug_mode = ! empty( $settings['debug_mode'] );
 					<span id="aiaw-save-status"></span>
 				</p>
 			</div>
+
+			<!-- SEO Settings -->
+			<div class="aiaw-card aiaw-seo-section">
+				<h3><?php esc_html_e( 'SEO Settings', 'ai-assisted-writing' ); ?>
+					<button type="button" id="aiaw-generate-seo-btn" class="button button-small" style="margin-left:10px;">
+						<?php esc_html_e( 'Generate SEO', 'ai-assisted-writing' ); ?>
+					</button>
+					<span id="aiaw-seo-status"></span>
+				</h3>
+
+				<p>
+					<label for="aiaw-seo-title"><?php esc_html_e( 'SEO Title', 'ai-assisted-writing' ); ?></label><br />
+					<input type="text" id="aiaw-seo-title" class="large-text" />
+					<span class="aiaw-seo-hint"><span id="aiaw-seo-title-count">0</span>/60</span>
+				</p>
+
+				<p>
+					<label for="aiaw-seo-description"><?php esc_html_e( 'Meta Description', 'ai-assisted-writing' ); ?></label><br />
+					<textarea id="aiaw-seo-description" class="large-text" rows="3"></textarea>
+					<span class="aiaw-seo-hint"><span id="aiaw-seo-desc-count">0</span>/155</span>
+				</p>
+
+				<p>
+					<label for="aiaw-seo-keywords"><?php esc_html_e( 'Focus Keywords', 'ai-assisted-writing' ); ?></label><br />
+					<input type="text" id="aiaw-seo-keywords" class="large-text"
+						placeholder="<?php esc_attr_e( 'Comma-separated keywords', 'ai-assisted-writing' ); ?>" />
+				</p>
+
+				<p>
+					<label for="aiaw-seo-og-title"><?php esc_html_e( 'OG Title', 'ai-assisted-writing' ); ?></label><br />
+					<input type="text" id="aiaw-seo-og-title" class="large-text" />
+					<span class="aiaw-seo-hint"><span id="aiaw-seo-og-title-count">0</span>/95</span>
+				</p>
+
+				<p>
+					<label for="aiaw-seo-og-description"><?php esc_html_e( 'OG Description', 'ai-assisted-writing' ); ?></label><br />
+					<textarea id="aiaw-seo-og-description" class="large-text" rows="2"></textarea>
+					<span class="aiaw-seo-hint"><span id="aiaw-seo-og-desc-count">0</span>/200</span>
+				</p>
+
+				<p>
+					<label for="aiaw-seo-slug"><?php esc_html_e( 'SEO Slug', 'ai-assisted-writing' ); ?></label><br />
+					<input type="text" id="aiaw-seo-slug" class="large-text" />
+				</p>
+			</div>
 		</div>
 	</div>
 

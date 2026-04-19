@@ -123,6 +123,9 @@ class AIAW_Core {
 				'custom_model'      => __( '-- Custom --', 'ai-assisted-writing' ),
 				'stream_error'      => __( 'Generation error.', 'ai-assisted-writing' ),
 				'loading'           => __( 'Loading...', 'ai-assisted-writing' ),
+				'generating_seo'    => __( 'Generating SEO...', 'ai-assisted-writing' ),
+				'seo_done'          => __( 'SEO generated.', 'ai-assisted-writing' ),
+				'seo_error'         => __( 'SEO generation failed.', 'ai-assisted-writing' ),
 			),
 		) );
 	}

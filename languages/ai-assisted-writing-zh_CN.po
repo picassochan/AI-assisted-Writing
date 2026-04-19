@@ -3,7 +3,7 @@
 # This file is distributed under the GPL-2.0+ license.
 msgid ""
 msgstr ""
-"Project-Id-Version: AI-assisted Writing 1.0.9\n"
+"Project-Id-Version: AI-assisted Writing 1.1.0\n"
 "Report-Msgid-Bugs-To: https://github.com/picassochan/AI-assisted-Writing/issues\n"
 "POT-Creation-Date: 2026-04-19 00:00+0000\n"
 "PO-Revision-Date: 2026-04-19 00:00+0800\n"
@@ -290,3 +290,42 @@ msgstr "启用调试模式（在写作助手页面显示调试面板）"
 
 msgid "Loading..."
 msgstr "加载中..."
+
+msgid "Generating SEO..."
+msgstr "正在生成 SEO..."
+
+msgid "SEO generated."
+msgstr "SEO 已生成。"
+
+msgid "SEO generation failed."
+msgstr "SEO 生成失败。"
+
+msgid "SEO Settings"
+msgstr "SEO 设置"
+
+msgid "Generate SEO"
+msgstr "生成 SEO"
+
+msgid "SEO Title"
+msgstr "SEO 标题"
+
+msgid "Meta Description"
+msgstr "元描述"
+
+msgid "Focus Keywords"
+msgstr "焦点关键词"
+
+msgid "Comma-separated keywords"
+msgstr "逗号分隔的关键词"
+
+msgid "OG Title"
+msgstr "OG 标题"
+
+msgid "OG Description"
+msgstr "OG 描述"
+
+msgid "SEO Slug"
+msgstr "SEO 别名"
+
+msgid "Title and content are required for SEO generation."
+msgstr "SEO 生成需要标题和内容。"

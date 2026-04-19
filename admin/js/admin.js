@@ -330,6 +330,31 @@
 			$('#aiaw-publish-btn').on('click', function() {
 				self.createPost('publish');
 			});
+
+			// Generate SEO button
+			$('#aiaw-generate-seo-btn').on('click', function() {
+				var title = $('#aiaw-article-title').val();
+				var content = $('#aiaw-article-content').val();
+				if (!title || !content) {
+					alert(aiaw.strings.title_required);
+					return;
+				}
+				self.generateSEO(title, content);
+			});
+
+			// SEO character counters
+			$('#aiaw-seo-title').on('input', function() {
+				self.updateSEOCount('#aiaw-seo-title-count', $(this).val().length, 60);
+			});
+			$('#aiaw-seo-description').on('input', function() {
+				self.updateSEOCount('#aiaw-seo-desc-count', $(this).val().length, 155);
+			});
+			$('#aiaw-seo-og-title').on('input', function() {
+				self.updateSEOCount('#aiaw-seo-og-title-count', $(this).val().length, 95);
+			});
+			$('#aiaw-seo-og-description').on('input', function() {
+				self.updateSEOCount('#aiaw-seo-og-desc-count', $(this).val().length, 200);
+			});
 		},
 
 		generateArticle: function() {
@@ -403,6 +428,10 @@
 						self.finalizeGeneratedContent(fullContent, title, $content, $articleTitle);
 						$status.text('');
 						$btn.prop('disabled', false);
+						// Auto-generate SEO
+						var seoTitle = $articleTitle.val();
+						var seoContent = $content.val();
+						if (seoTitle && seoContent) { self.generateSEO(seoTitle, seoContent); }
 						return;
 					}
 
@@ -426,6 +455,10 @@
 							self.finalizeGeneratedContent(fullContent, title, $content, $articleTitle);
 							$status.text('');
 							$btn.prop('disabled', false);
+							// Auto-generate SEO
+							var seoTitle = $articleTitle.val();
+							var seoContent = $content.val();
+							if (seoTitle && seoContent) { self.generateSEO(seoTitle, seoContent); }
 							return;
 						} else if (data.type === 'error') {
 							self.dlog('Stream: error from server —', data.message);
@@ -472,6 +505,10 @@
 					if (response.data.tags && response.data.tags.length > 0) {
 						$('#aiaw-article-tags').val(response.data.tags.join(', '));
 					}
+					// Auto-generate SEO
+					var seoTitle = $articleTitle.val();
+					var seoContent = $content.val();
+					if (seoTitle && seoContent) { self.generateSEO(seoTitle, seoContent); }
 				} else {
 					self.dlog('AJAX error:', response.data.message);
 					alert(response.data.message);
@@ -501,6 +538,56 @@
 			}
 		},
 
+		/**
+		 * Generate SEO metadata via AI.
+		 */
+		generateSEO: function(title, content) {
+			var self = this;
+			var $status = $('#aiaw-seo-status');
+			var $btn = $('#aiaw-generate-seo-btn');
+
+			$btn.prop('disabled', true);
+			$status.text(aiaw.strings.generating_seo);
+
+			self.dlog('SEO: generating for title=', title);
+
+			$.post(aiaw.ajax_url, {
+				action: 'aiaw_generate_seo',
+				nonce: aiaw.nonce,
+				title: title,
+				content: content
+			}, function(response) {
+				$btn.prop('disabled', false);
+				if (response.success && response.data) {
+					$('#aiaw-seo-title').val(response.data.seo_title || '').trigger('input');
+					$('#aiaw-seo-description').val(response.data.meta_description || '').trigger('input');
+					$('#aiaw-seo-keywords').val(response.data.focus_keywords || '');
+					$('#aiaw-seo-og-title').val(response.data.og_title || '').trigger('input');
+					$('#aiaw-seo-og-description').val(response.data.og_description || '').trigger('input');
+					$('#aiaw-seo-slug').val(response.data.slug || '');
+					$status.text(aiaw.strings.seo_done);
+					self.dlog('SEO: done');
+				} else {
+					$status.text('');
+					self.dlog('SEO: error');
+					alert(response.data ? response.data.message : aiaw.strings.seo_error);
+				}
+			}).fail(function() {
+				$btn.prop('disabled', false);
+				$status.text('');
+				alert(aiaw.strings.seo_error);
+			});
+		},
+
+		updateSEOCount: function(counterSelector, current, max) {
+			$(counterSelector).text(current);
+			if (current > max) {
+				$(counterSelector).css('color', '#d63638');
+			} else {
+				$(counterSelector).css('color', '');
+			}
+		},
+
 		createPost: function(status) {
 			var title = $('#aiaw-article-title').val();
 			var content = $('#aiaw-article-content').val();
@@ -523,7 +610,13 @@
 				content: content,
 				category_id: catId,
 				tags: tags,
-				status: status
+				status: status,
+				seo_title: $('#aiaw-seo-title').val(),
+				meta_description: $('#aiaw-seo-description').val(),
+				focus_keywords: $('#aiaw-seo-keywords').val(),
+				og_title: $('#aiaw-seo-og-title').val(),
+				og_description: $('#aiaw-seo-og-description').val(),
+				seo_slug: $('#aiaw-seo-slug').val()
 			}, function(response) {
 				if (response.success) {
 					$status.text(aiaw.strings.saved);

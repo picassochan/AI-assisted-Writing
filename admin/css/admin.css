@@ -185,6 +185,34 @@
 	padding: 20px 0;
 }
 
+/* SEO Section */
+.aiaw-seo-section input[type="text"],
+.aiaw-seo-section textarea {
+	max-width: 100%;
+	box-sizing: border-box;
+}
+
+.aiaw-seo-hint {
+	display: inline-block;
+	font-size: 12px;
+	color: #999;
+	margin-top: 2px;
+}
+
+.aiaw-seo-hint span {
+	color: inherit;
+}
+
+#aiaw-seo-status {
+	font-style: italic;
+	color: #666;
+	margin-left: 10px;
+}
+
+#aiaw-generate-seo-btn {
+	vertical-align: middle;
+}
+
 /* Responsive */
 @media (max-width: 782px) {
 	.aiaw-writing-layout {
