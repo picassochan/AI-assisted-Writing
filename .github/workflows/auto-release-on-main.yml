@@ -70,4 +70,8 @@ jobs:
           draft: false
           prerelease: false
           files: ai-assisted-writing.zip
+<<<<<<< HEAD
           fail_on_unmatched_files: true
+=======
+          fail_on_unmatched_files: true
+>>>>>>> d9537168b5ff29d0eaf26d59104c7daa0714e4fa
