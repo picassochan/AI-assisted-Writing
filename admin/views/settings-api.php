@@ -49,12 +49,17 @@ defined( 'ABSPATH' ) || exit;
 			<td>
 				<select id="aiaw_primary_model_select" class="regular-text aiaw-model-select" data-type="primary">
 					<option value=""><?php esc_html_e( '-- Select Model --', 'ai-assisted-writing' ); ?></option>
-					<?php if ( ! empty( $saved_primary ) && ! in_array( $saved_primary, $cached_models, true ) ) : ?>
+					<?php
+					$primary_in_list = false;
+					foreach ( $cached_models as $m ) :
+						if ( is_array( $m ) ) { $mid = $m['id']; } else { $mid = $m; }
+						if ( $mid === $saved_primary ) { $primary_in_list = true; }
+				?>
+						<option value="<?php echo esc_attr( $mid ); ?>"<?php selected( $mid, $saved_primary ); ?>><?php echo esc_html( $mid ); ?></option>
+					<?php endforeach; ?>
+					<?php if ( ! empty( $saved_primary ) && ! $primary_in_list ) : ?>
 						<option value="<?php echo esc_attr( $saved_primary ); ?>" selected><?php echo esc_html( $saved_primary ); ?></option>
 					<?php endif; ?>
-					<?php foreach ( $cached_models as $m ) : ?>
-						<option value="<?php echo esc_attr( $m ); ?>"<?php selected( $m, $saved_primary ); ?>><?php echo esc_html( $m ); ?></option>
-					<?php endforeach; ?>
 					<option value="__custom__"><?php esc_html_e( '-- Custom --', 'ai-assisted-writing' ); ?></option>
 				</select>
 				<input type="text" id="aiaw_primary_model_input"
@@ -74,12 +79,17 @@ defined( 'ABSPATH' ) || exit;
 			<td>
 				<select id="aiaw_backup_model_select" class="regular-text aiaw-model-select" data-type="backup">
 					<option value=""><?php esc_html_e( '-- Select Model --', 'ai-assisted-writing' ); ?></option>
-					<?php if ( ! empty( $saved_backup ) && ! in_array( $saved_backup, $cached_models, true ) ) : ?>
+					<?php
+					$backup_in_list = false;
+					foreach ( $cached_models as $m ) :
+						if ( is_array( $m ) ) { $mid = $m['id']; } else { $mid = $m; }
+						if ( $mid === $saved_backup ) { $backup_in_list = true; }
+				?>
+						<option value="<?php echo esc_attr( $mid ); ?>"<?php selected( $mid, $saved_backup ); ?>><?php echo esc_html( $mid ); ?></option>
+					<?php endforeach; ?>
+					<?php if ( ! empty( $saved_backup ) && ! $backup_in_list ) : ?>
 						<option value="<?php echo esc_attr( $saved_backup ); ?>" selected><?php echo esc_html( $saved_backup ); ?></option>
 					<?php endif; ?>
-					<?php foreach ( $cached_models as $m ) : ?>
-						<option value="<?php echo esc_attr( $m ); ?>"<?php selected( $m, $saved_backup ); ?>><?php echo esc_html( $m ); ?></option>
-					<?php endforeach; ?>
 					<option value="__custom__"><?php esc_html_e( '-- Custom --', 'ai-assisted-writing' ); ?></option>
 				</select>
 				<input type="text" id="aiaw_backup_model_input"
