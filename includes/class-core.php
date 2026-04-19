@@ -96,28 +96,34 @@ class AIAW_Core {
 			true
 		);
 
+		$templates = AIAW_Template::get_instance()->get_all();
+
 		wp_localize_script( 'aiaw-admin', 'aiaw', array(
-			'ajax_url' => admin_url( 'admin-ajax.php' ),
-			'nonce'    => wp_create_nonce( 'aiaw_nonce' ),
-			'strings'  => array(
-				'testing'         => __( 'Testing connection...', 'ai-assisted-writing' ),
-				'success'         => __( 'Connection successful!', 'ai-assisted-writing' ),
-				'failed'          => __( 'Connection failed.', 'ai-assisted-writing' ),
-				'fetching'        => __( 'Fetching models...', 'ai-assisted-writing' ),
-				'fetch_ok'        => __( 'models found.', 'ai-assisted-writing' ),
-				'fetch_empty'     => __( 'No models found. You can select "Custom" to enter model ID manually.', 'ai-assisted-writing' ),
-				'generating'      => __( 'Generating...', 'ai-assisted-writing' ),
-				'saving'          => __( 'Saving...', 'ai-assisted-writing' ),
-				'saved'           => __( 'Article saved!', 'ai-assisted-writing' ),
-				'select_cat'      => __( 'Please select a category.', 'ai-assisted-writing' ),
-				'enter_title'     => __( 'Please enter a title.', 'ai-assisted-writing' ),
-				'confirm_del_cat' => __( 'Delete this category and all its topics?', 'ai-assisted-writing' ),
+			'ajax_url'  => admin_url( 'admin-ajax.php' ),
+			'nonce'     => wp_create_nonce( 'aiaw_nonce' ),
+			'templates' => $templates,
+			'strings'   => array(
+				'testing'           => __( 'Testing connection...', 'ai-assisted-writing' ),
+				'success'           => __( 'Connection successful!', 'ai-assisted-writing' ),
+				'failed'            => __( 'Connection failed.', 'ai-assisted-writing' ),
+				'fetching'          => __( 'Fetching models...', 'ai-assisted-writing' ),
+				'fetch_ok'          => __( 'models found.', 'ai-assisted-writing' ),
+				'fetch_empty'       => __( 'No models found. You can select "Custom" to enter model ID manually.', 'ai-assisted-writing' ),
+				'generating'        => __( 'Generating...', 'ai-assisted-writing' ),
+				'saving'            => __( 'Saving...', 'ai-assisted-writing' ),
+				'saved'             => __( 'Article saved!', 'ai-assisted-writing' ),
+				'select_cat'        => __( 'Please select a category.', 'ai-assisted-writing' ),
+				'enter_title'       => __( 'Please enter a title.', 'ai-assisted-writing' ),
+				'confirm_del_cat'   => __( 'Delete this category and all its topics?', 'ai-assisted-writing' ),
 				'confirm_del_topic' => __( 'Delete this topic?', 'ai-assisted-writing' ),
-				'save_err'        => __( 'Error saving template.', 'ai-assisted-writing' ),
-				'del_err'         => __( 'Error deleting.', 'ai-assisted-writing' ),
-				'req_failed'      => __( 'Request failed.', 'ai-assisted-writing' ),
-				'title_required'  => __( 'Title and content are required.', 'ai-assisted-writing' ),
-				'no_templates'    => __( 'No templates for this category.', 'ai-assisted-writing' ),
+				'save_err'          => __( 'Error saving template.', 'ai-assisted-writing' ),
+				'del_err'           => __( 'Error deleting.', 'ai-assisted-writing' ),
+				'req_failed'        => __( 'Request failed.', 'ai-assisted-writing' ),
+				'title_required'    => __( 'Title and content are required.', 'ai-assisted-writing' ),
+				'no_templates'      => __( 'No templates for this category.', 'ai-assisted-writing' ),
+				'select_model'      => __( '-- Select Model --', 'ai-assisted-writing' ),
+				'custom_model'      => __( '-- Custom --', 'ai-assisted-writing' ),
+				'stream_error'      => __( 'Generation error.', 'ai-assisted-writing' ),
 			),
 		) );
 	}

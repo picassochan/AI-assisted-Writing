@@ -118,7 +118,7 @@
 			var savedVal = $hidden.val() || '';
 
 			$select.empty();
-			$select.append($('<option>').val('').text('-- Select Model --'));
+			$select.append($('<option>').val('').text(aiaw.strings.select_model));
 
 			for (var i = 0; i < models.length; i++) {
 				$select.append($('<option>').val(models[i].id).text(models[i].name));
@@ -128,7 +128,7 @@
 				$select.append($('<option>').val(savedVal).text(savedVal));
 			}
 
-			$select.append($('<option>').val('__custom__').text('-- Custom --'));
+			$select.append($('<option>').val('__custom__').text(aiaw.strings.custom_model));
 
 			if (savedVal && $select.find('option[value="' + savedVal + '"]').length) {
 				$select.val(savedVal);
@@ -260,21 +260,24 @@
 
 				$template.prop('disabled', false);
 				var found = false;
-				(aiawTemplates || []).forEach(function(cat) {
-					if (parseInt(cat.wp_category_id, 10) === catId && cat.topics) {
-						cat.topics.forEach(function(t) {
+				var templates = aiaw.templates || [];
+				for (var i = 0; i < templates.length; i++) {
+					var cat = templates[i];
+					if (parseInt(cat.wp_category_id, 10) === catId && cat.topics && cat.topics.length > 0) {
+						for (var j = 0; j < cat.topics.length; j++) {
+							var t = cat.topics[j];
 							$template.append($('<option>').val(t.id).text(t.name));
 							found = true;
-						});
+						}
 					}
-				});
+				}
 
 				if (!found) {
 					$template.append($('<option>').val('').text(aiaw.strings.no_templates));
 				}
 			});
 
-			// Generate button
+			// Generate button (streaming)
 			$('#aiaw-generate-btn').on('click', function() {
 				self.generateArticle();
 			});
@@ -297,34 +300,103 @@
 			if (!title) { alert(aiaw.strings.enter_title); return; }
 
 			var $status = $('#aiaw-generate-status');
-			$('#aiaw-generate-btn').prop('disabled', true);
-			$status.text(aiaw.strings.generating);
+			var $content = $('#aiaw-article-content');
+			var $articleTitle = $('#aiaw-article-title');
+			var $btn = $('#aiaw-generate-btn');
 
-			$.post(aiaw.ajax_url, {
-				action: 'aiaw_generate',
+			$btn.prop('disabled', true);
+			$status.text(aiaw.strings.generating);
+			$content.val('');
+			$articleTitle.val(title);
+			$('#aiaw-article-cat-id').val(catId);
+
+			var params = new URLSearchParams({
+				action: 'aiaw_generate_stream',
 				nonce: aiaw.nonce,
 				category_id: catId,
 				template_id: templateId || '',
 				title: title,
 				description: $('#aiaw-input-description').val()
-			}, function(response) {
-				$('#aiaw-generate-btn').prop('disabled', false);
-				$status.text('');
-				if (response.success) {
-					$('#aiaw-article-title').val(response.data.title || title);
-					$('#aiaw-article-content').val(response.data.content || '');
-					$('#aiaw-article-cat-id').val(response.data.category_id);
-					if (response.data.tags && response.data.tags.length > 0) {
-						$('#aiaw-article-tags').val(response.data.tags.join(', '));
-					}
-				} else {
-					alert(response.data.message);
-				}
-			}).fail(function() {
-				$('#aiaw-generate-btn').prop('disabled', false);
-				$status.text('');
-				alert(aiaw.strings.req_failed);
 			});
+
+			var self = this;
+			var fullContent = '';
+
+			fetch(aiaw.ajax_url, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+				body: params.toString()
+			}).then(function(response) {
+				if (!response.ok) {
+					throw new Error('HTTP ' + response.status);
+				}
+				var reader = response.body.getReader();
+				var decoder = new TextDecoder();
+				var buffer = '';
+
+				function processChunk(result) {
+					if (result.done) {
+						// Stream finished - finalize.
+						self.finalizeGeneratedContent(fullContent, title);
+						$status.text('');
+						$btn.prop('disabled', false);
+						return;
+					}
+
+					buffer += decoder.decode(result.value, { stream: true });
+					var lines = buffer.split('\n');
+					buffer = lines.pop(); // Keep incomplete line.
+
+					for (var i = 0; i < lines.length; i++) {
+						var line = lines[i].trim();
+						if (line.indexOf('data: ') !== 0) continue;
+
+						var data;
+						try { data = JSON.parse(line.substring(6)); } catch(e) { continue; }
+
+						if (data.type === 'content') {
+							fullContent += data.content;
+							$content.val(fullContent);
+							$content.scrollTop($content[0].scrollHeight);
+						} else if (data.type === 'done') {
+							self.finalizeGeneratedContent(fullContent, title);
+							$status.text('');
+							$btn.prop('disabled', false);
+							return;
+						} else if (data.type === 'error') {
+							alert(data.message);
+							$status.text('');
+							$btn.prop('disabled', false);
+							return;
+						}
+					}
+
+					return reader.read().then(processChunk);
+				}
+
+				return reader.read().then(processChunk);
+			}).catch(function(err) {
+				alert(aiaw.strings.stream_error + ' ' + err.message);
+				$status.text('');
+				$btn.prop('disabled', false);
+			});
+		},
+
+		/**
+		 * After streaming finishes, extract title from H1 if present.
+		 */
+		finalizeGeneratedContent: function(content, fallbackTitle) {
+			if (!content) return;
+
+			var titleMatch = content.match(/^#\s+(.+)$/m);
+			if (titleMatch) {
+				$('#aiaw-article-title').val(titleMatch[1]);
+				var cleaned = content.replace(/^#\s+.+[\r]?\n?/, '').trim();
+				$('#aiaw-article-content').val(cleaned);
+			} else {
+				$('#aiaw-article-title').val(fallbackTitle);
+				$('#aiaw-article-content').val(content);
+			}
 		},
 
 		createPost: function(status) {

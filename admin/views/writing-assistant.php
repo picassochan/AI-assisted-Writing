@@ -103,8 +103,3 @@ defined( 'ABSPATH' ) || exit;
 
 	<?php endif; ?>
 </div>
-
-<!-- Templates data for JS -->
-<script type="text/javascript">
-	var aiawTemplates = <?php echo wp_json_encode( $templates ); ?>;
-</script>

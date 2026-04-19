@@ -3,7 +3,7 @@
 # This file is distributed under the GPL-2.0+ license.
 msgid ""
 msgstr ""
-"Project-Id-Version: AI-assisted Writing 1.0.0\n"
+"Project-Id-Version: AI-assisted Writing 1.0.4\n"
 "Report-Msgid-Bugs-To: https://github.com/picassochan/AI-assisted-Writing/issues\n"
 "POT-Creation-Date: 2026-04-19 00:00+0000\n"
 "PO-Revision-Date: 2026-04-19 00:00+0800\n"
@@ -32,6 +32,12 @@ msgstr "API 设置"
 
 msgid "AI Templates"
 msgstr "AI 模板"
+
+msgid "AI Template"
+msgstr "AI 模板"
+
+msgid "-- Select Template --"
+msgstr "-- 选择模板 --"
 
 msgid "Permission denied."
 msgstr "权限不足。"
@@ -147,41 +153,23 @@ msgstr "分类"
 msgid "-- Select Category --"
 msgstr "-- 选择分类 --"
 
-msgid "Topic"
-msgstr "主题"
+msgid "Title"
+msgstr "标题"
 
-msgid "-- Select Topic --"
-msgstr "-- 选择主题 --"
+msgid "Enter article title"
+msgstr "输入文章标题"
 
-msgid "Keywords (optional)"
-msgstr "关键词（可选）"
+msgid "Description / Outline"
+msgstr "描述 / 大纲"
 
-msgid "e.g. technology, AI trends"
-msgstr "例如：技术、AI 趋势"
-
-msgid "Generation Mode"
-msgstr "生成模式"
-
-msgid "One-shot (full article)"
-msgstr "一次性（完整文章）"
-
-msgid "Step-by-step (outline first)"
-msgstr "分步（先生成大纲）"
+msgid "Briefly describe what the article should cover..."
+msgstr "简要描述文章应涵盖的内容..."
 
 msgid "Generate"
 msgstr "生成"
 
-msgid "Outline"
-msgstr "大纲"
-
-msgid "Expand All Sections"
-msgstr "展开所有章节"
-
 msgid "Article Editor"
 msgstr "文章编辑器"
-
-msgid "Title"
-msgstr "标题"
 
 msgid "Content"
 msgstr "内容"
@@ -191,9 +179,6 @@ msgstr "标签"
 
 msgid "Comma-separated tags"
 msgstr "逗号分隔的标签"
-
-msgid "Auto-generate Tags"
-msgstr "自动生成标签"
 
 msgid "Save as Draft"
 msgstr "保存为草稿"
@@ -222,26 +207,29 @@ msgstr "API 返回了空响应。"
 msgid "All models failed."
 msgstr "所有模型均失败。"
 
-msgid "Invalid category or topic."
-msgstr "无效的分类或主题。"
+msgid "cURL is required for streaming."
+msgstr "流式生成需要 cURL 支持。"
 
-msgid "Write a detailed, engaging section for the heading: \"%1$s\"\n\nFull outline context:\n%2$s\n\n%3$s\n\nWrite in a professional yet accessible tone. Use markdown formatting. The section should be 300-500 words."
-msgstr "为标题 \"%1$s\" 撰写一个详细、引人入胜的章节。\n\n完整大纲上下文：\n%2$s\n\n%3$s\n\n请使用专业但易于理解的语调，使用 Markdown 格式。章节字数应在 300-500 字。"
+msgid "Streaming request failed."
+msgstr "流式请求失败。"
 
-msgid "Focus on these keywords: %s"
-msgstr "关注以下关键词：%s"
+msgid "User provided description/outline"
+msgstr "用户提供的描述/大纲"
 
-msgid "Based on the following article, suggest 3 to 5 relevant tags as a JSON array of strings. Only return the JSON array, nothing else.\n\nArticle:\n%s"
-msgstr "根据以下文章，建议 3 到 5 个相关标签，以 JSON 字符串数组格式返回。只返回 JSON 数组，不要返回其他内容。\n\n文章：\n%s"
+msgid "Please enter a title."
+msgstr "请输入标题。"
 
-msgid "Create a detailed article outline for the topic \"%1$s\" in the category \"%2$s\".%3$s%4$s\n\nReturn the outline in markdown format with H2 headings and brief bullet points under each. Include an introduction and conclusion section."
-msgstr "为分类 \"%2$s\" 下的主题 \"%1$s\" 创建详细的文章大纲。%3$s%4$s\n\n以 Markdown 格式返回大纲，使用 H2 标题和简短的要点。包含引言和结论部分。"
+msgid "Write a complete, well-structured article with the title: \"%1$s\"%2$s%3$s\n\nReturn your response as a JSON object with this exact structure:\n{\n  \"title\": \"Your suggested title (can refine the original)\",\n  \"content\": \"Full article content in markdown format (do NOT include the title as H1)\",\n  \"tags\": [\"tag1\", \"tag2\", \"tag3\"]\n}\n\nRequirements:\n- Use proper headings (H2 for sections, H3 for subsections)\n- Include an introduction and conclusion\n- Write in a professional yet engaging tone\n- Aim for 800-1500 words\n- Use markdown formatting\n- Suggest 3-5 relevant tags\n- Only return the JSON object, nothing else"
+msgstr "撰写一篇标题为 \"%1$s\" 的完整、结构清晰的文章。%2$s%3$s\n\n请以 JSON 格式返回，结构如下：\n{\n  \"title\": \"建议的标题（可优化原标题）\",\n  \"content\": \"完整的 Markdown 格式文章内容（不要包含 H1 标题）\",\n  \"tags\": [\"标签1\", \"标签2\", \"标签3\"]\n}\n\n要求：\n- 使用适当的标题（H2 为章节标题，H3 为小节标题）\n- 包含引言和结论\n- 使用专业且引人入胜的语调\n- 目标 800-1500 字\n- 使用 Markdown 格式\n- 建议 3-5 个相关标签\n- 仅返回 JSON 对象，不要返回其他内容"
 
-msgid "Write a complete, well-structured article about \"%1$s\" in the category \"%2$s\".%3$s%4$s\n\nRequirements:\n- Use proper headings (H1 for title, H2 for sections)\n- Include an introduction and conclusion\n- Write in a professional yet engaging tone\n- Aim for 800-1500 words\n- Use markdown formatting"
-msgstr "撰写一篇关于分类 \"%2$s\" 下主题 \"%1$s\" 的完整、结构清晰的文章。%3$s%4$s\n\n要求：\n- 使用适当的标题（H1 为文章标题，H2 为章节标题）\n- 包含引言和结论\n- 使用专业且引人入胜的语调\n- 目标 800-1500 字\n- 使用 Markdown 格式"
+msgid "Write a complete, well-structured article with the title: \"%1$s\"%2$s%3$s\n\nRequirements:\n- Start with the title as a markdown H1 heading\n- Use proper headings (H2 for sections, H3 for subsections)\n- Include an introduction and conclusion\n- Write in a professional yet engaging tone\n- Aim for 800-1500 words\n- Use markdown formatting"
+msgstr "撰写一篇标题为 \"%1$s\" 的完整、结构清晰的文章。%2$s%3$s\n\n要求：\n- 以 Markdown H1 标题开头\n- 使用适当的标题（H2 为章节标题，H3 为小节标题）\n- 包含引言和结论\n- 使用专业且引人入胜的语调\n- 目标 800-1500 字\n- 使用 Markdown 格式"
 
-msgid "You are a professional content writer for a WordPress blog. Write clear, engaging, and SEO-friendly content. Always respond in the same language as the user's request."
-msgstr "你是一位专业的 WordPress 博客内容撰稿人。请撰写清晰、引人入胜且 SEO 友好的内容。始终使用与用户请求相同的语言回复。"
+msgid "You are a professional content writer for a WordPress blog. Write clear, engaging, and SEO-friendly content. Always respond in the same language as the user's request. You must respond with valid JSON only."
+msgstr "你是一位专业的 WordPress 博客内容撰稿人。请撰写清晰、引人入胜且 SEO 友好的内容。始终使用与用户请求相同的语言回复。必须仅返回有效的 JSON。"
+
+msgid "You are a professional content writer for a WordPress blog. Write clear, engaging, and SEO-friendly content. Always respond in the same language as the user's request. Output markdown directly."
+msgstr "你是一位专业的 WordPress 博客内容撰稿人。请撰写清晰、引人入胜且 SEO 友好的内容。始终使用与用户请求相同的语言回复。直接输出 Markdown。"
 
 msgid "Testing connection..."
 msgstr "正在测试连接..."
@@ -261,12 +249,6 @@ msgstr "未找到模型。您可以选择\"自定义\"手动输入模型 ID。"
 msgid "Generating..."
 msgstr "正在生成..."
 
-msgid "Generating outline..."
-msgstr "正在生成大纲..."
-
-msgid "Expanding section..."
-msgstr "正在展开章节..."
-
 msgid "Saving..."
 msgstr "正在保存..."
 
@@ -276,20 +258,14 @@ msgstr "文章已保存！"
 msgid "Please select a category."
 msgstr "请选择分类。"
 
-msgid "Please select a topic."
-msgstr "请选择主题。"
-
 msgid "Delete this category and all its topics?"
 msgstr "删除此分类及其所有主题？"
 
 msgid "Delete this topic?"
 msgstr "删除此主题？"
 
-msgid "No H2 sections found in the outline."
-msgstr "大纲中未找到 H2 章节。"
-
-msgid "Generate content first."
-msgstr "请先生成内容。"
+msgid "No templates for this category."
+msgstr "该分类暂无模板。"
 
 msgid "Title and content are required."
 msgstr "标题和内容不能为空。"
@@ -303,8 +279,5 @@ msgstr "保存模板时出错。"
 msgid "Error deleting."
 msgstr "删除时出错。"
 
-msgid "Failed to generate tags."
-msgstr "生成标签失败。"
-
-msgid "Additional instructions: "
-msgstr "附加说明："
+msgid "Generation error."
+msgstr "生成错误。"

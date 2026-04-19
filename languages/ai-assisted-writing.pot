@@ -3,7 +3,7 @@
 # This file is distributed under the GPL-2.0+ license.
 msgid ""
 msgstr ""
-"Project-Id-Version: AI-assisted Writing 1.0.0\n"
+"Project-Id-Version: AI-assisted Writing 1.0.4\n"
 "Report-Msgid-Bugs-To: https://github.com/picassochan/AI-assisted-Writing/issues\n"
 "POT-Creation-Date: 2026-04-19 00:00+0000\n"
 "MIME-Version: 1.0\n"
@@ -29,6 +29,12 @@ msgid "API Settings"
 msgstr ""
 
 msgid "AI Templates"
+msgstr ""
+
+msgid "AI Template"
+msgstr ""
+
+msgid "-- Select Template --"
 msgstr ""
 
 msgid "Permission denied."
@@ -145,40 +151,22 @@ msgstr ""
 msgid "-- Select Category --"
 msgstr ""
 
-msgid "Topic"
+msgid "Title"
 msgstr ""
 
-msgid "-- Select Topic --"
+msgid "Enter article title"
 msgstr ""
 
-msgid "Keywords (optional)"
+msgid "Description / Outline"
 msgstr ""
 
-msgid "e.g. technology, AI trends"
-msgstr ""
-
-msgid "Generation Mode"
-msgstr ""
-
-msgid "One-shot (full article)"
-msgstr ""
-
-msgid "Step-by-step (outline first)"
+msgid "Briefly describe what the article should cover..."
 msgstr ""
 
 msgid "Generate"
 msgstr ""
 
-msgid "Outline"
-msgstr ""
-
-msgid "Expand All Sections"
-msgstr ""
-
 msgid "Article Editor"
-msgstr ""
-
-msgid "Title"
 msgstr ""
 
 msgid "Content"
@@ -188,9 +176,6 @@ msgid "Tags"
 msgstr ""
 
 msgid "Comma-separated tags"
-msgstr ""
-
-msgid "Auto-generate Tags"
 msgstr ""
 
 msgid "Save as Draft"
@@ -220,25 +205,28 @@ msgstr ""
 msgid "All models failed."
 msgstr ""
 
-msgid "Invalid category or topic."
+msgid "cURL is required for streaming."
 msgstr ""
 
-msgid "Write a detailed, engaging section for the heading: \"%1$s\"\n\nFull outline context:\n%2$s\n\n%3$s\n\nWrite in a professional yet accessible tone. Use markdown formatting. The section should be 300-500 words."
+msgid "Streaming request failed."
 msgstr ""
 
-msgid "Focus on these keywords: %s"
+msgid "User provided description/outline"
 msgstr ""
 
-msgid "Based on the following article, suggest 3 to 5 relevant tags as a JSON array of strings. Only return the JSON array, nothing else.\n\nArticle:\n%s"
+msgid "Please enter a title."
 msgstr ""
 
-msgid "Create a detailed article outline for the topic \"%1$s\" in the category \"%2$s\".%3$s%4$s\n\nReturn the outline in markdown format with H2 headings and brief bullet points under each. Include an introduction and conclusion section."
+msgid "Write a complete, well-structured article with the title: \"%1$s\"%2$s%3$s\n\nReturn your response as a JSON object with this exact structure:\n{\n  \"title\": \"Your suggested title (can refine the original)\",\n  \"content\": \"Full article content in markdown format (do NOT include the title as H1)\",\n  \"tags\": [\"tag1\", \"tag2\", \"tag3\"]\n}\n\nRequirements:\n- Use proper headings (H2 for sections, H3 for subsections)\n- Include an introduction and conclusion\n- Write in a professional yet engaging tone\n- Aim for 800-1500 words\n- Use markdown formatting\n- Suggest 3-5 relevant tags\n- Only return the JSON object, nothing else"
 msgstr ""
 
-msgid "Write a complete, well-structured article about \"%1$s\" in the category \"%2$s\".%3$s%4$s\n\nRequirements:\n- Use proper headings (H1 for title, H2 for sections)\n- Include an introduction and conclusion\n- Write in a professional yet engaging tone\n- Aim for 800-1500 words\n- Use markdown formatting"
+msgid "Write a complete, well-structured article with the title: \"%1$s\"%2$s%3$s\n\nRequirements:\n- Start with the title as a markdown H1 heading\n- Use proper headings (H2 for sections, H3 for subsections)\n- Include an introduction and conclusion\n- Write in a professional yet engaging tone\n- Aim for 800-1500 words\n- Use markdown formatting"
 msgstr ""
 
-msgid "You are a professional content writer for a WordPress blog. Write clear, engaging, and SEO-friendly content. Always respond in the same language as the user's request."
+msgid "You are a professional content writer for a WordPress blog. Write clear, engaging, and SEO-friendly content. Always respond in the same language as the user's request. You must respond with valid JSON only."
+msgstr ""
+
+msgid "You are a professional content writer for a WordPress blog. Write clear, engaging, and SEO-friendly content. Always respond in the same language as the user's request. Output markdown directly."
 msgstr ""
 
 msgid "Testing connection..."
@@ -259,12 +247,6 @@ msgstr ""
 msgid "Generating..."
 msgstr ""
 
-msgid "Generating outline..."
-msgstr ""
-
-msgid "Expanding section..."
-msgstr ""
-
 msgid "Saving..."
 msgstr ""
 
@@ -274,19 +256,13 @@ msgstr ""
 msgid "Please select a category."
 msgstr ""
 
-msgid "Please select a topic."
-msgstr ""
-
 msgid "Delete this category and all its topics?"
 msgstr ""
 
 msgid "Delete this topic?"
 msgstr ""
 
-msgid "No H2 sections found in the outline."
-msgstr ""
-
-msgid "Generate content first."
+msgid "No templates for this category."
 msgstr ""
 
 msgid "Title and content are required."
@@ -301,8 +277,5 @@ msgstr ""
 msgid "Error deleting."
 msgstr ""
 
-msgid "Failed to generate tags."
-msgstr ""
-
-msgid "Additional instructions: "
+msgid "Generation error."
 msgstr ""

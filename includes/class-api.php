@@ -224,4 +224,106 @@ class AIAW_API {
 
 		return $last_error ? $last_error : new WP_Error( 'all_failed', __( 'All models failed.', 'ai-assisted-writing' ) );
 	}
+
+	/**
+	 * Stream chat completion via cURL, forwarding SSE chunks to callback.
+	 *
+	 * @param array    $messages Chat messages.
+	 * @param callable $callback Receives raw SSE lines from API.
+	 * @param string   $model    Optional model override.
+	 * @return true|WP_Error
+	 */
+	public function generate_stream( $messages, $callback, $model = null ) {
+		$settings = $this->get_settings();
+		$url = $settings['api_url'];
+		$key = $settings['api_key'];
+
+		if ( empty( $key ) ) {
+			return new WP_Error( 'no_api_key', __( 'API key is required.', 'ai-assisted-writing' ) );
+		}
+
+		$models_to_try = array();
+		if ( ! empty( $model ) ) {
+			$models_to_try[] = $model;
+		}
+		if ( ! empty( $settings['primary_model'] ) && ! in_array( $settings['primary_model'], $models_to_try, true ) ) {
+			$models_to_try[] = $settings['primary_model'];
+		}
+		if ( ! empty( $settings['backup_model'] ) && ! in_array( $settings['backup_model'], $models_to_try, true ) ) {
+			$models_to_try[] = $settings['backup_model'];
+		}
+
+		if ( empty( $models_to_try ) ) {
+			return new WP_Error( 'no_model', __( 'No model configured.', 'ai-assisted-writing' ) );
+		}
+
+		$chat_url   = $this->build_chat_url( $url );
+		$last_error = null;
+
+		foreach ( $models_to_try as $try_model ) {
+			$body = array(
+				'model'    => $try_model,
+				'messages' => $messages,
+				'stream'   => true,
+			);
+
+			$result = $this->curl_stream( $chat_url, $key, $body, $callback );
+			if ( ! is_wp_error( $result ) ) {
+				return true;
+			}
+			$last_error = $result;
+		}
+
+		return $last_error ? $last_error : new WP_Error( 'all_failed', __( 'All models failed.', 'ai-assisted-writing' ) );
+	}
+
+	/**
+	 * Execute a streaming cURL POST with SSE write callback.
+	 *
+	 * @param string   $url      API chat URL.
+	 * @param string   $key      API key.
+	 * @param array    $body     Request body.
+	 * @param callable $callback Called with each raw chunk.
+	 * @return true|WP_Error
+	 */
+	private function curl_stream( $url, $key, $body, $callback ) {
+		if ( ! function_exists( 'curl_init' ) ) {
+			return new WP_Error( 'no_curl', __( 'cURL is required for streaming.', 'ai-assisted-writing' ) );
+		}
+
+		$ch = curl_init( $url );
+		curl_setopt_array( $ch, array(
+			CURLOPT_POST           => true,
+			CURLOPT_POSTFIELDS     => wp_json_encode( $body ),
+			CURLOPT_HTTPHEADER     => array(
+				'Authorization: Bearer ' . $key,
+				'Content-Type: application/json',
+				'Accept: text/event-stream',
+			),
+			CURLOPT_TIMEOUT        => 120,
+			CURLOPT_WRITEFUNCTION  => function( $ch, $data ) use ( $callback ) {
+				call_user_func( $callback, $data );
+				return strlen( $data );
+			},
+			CURLOPT_SSL_VERIFYPEER => true,
+		) );
+
+		$result   = curl_exec( $ch );
+		$httpcode = curl_getinfo( $ch, CURLINFO_HTTP_CODE );
+		$error    = curl_error( $ch );
+		curl_close( $ch );
+
+		if ( false === $result ) {
+			return new WP_Error( 'curl_error', $error ?: __( 'Streaming request failed.', 'ai-assisted-writing' ) );
+		}
+
+		if ( 200 !== $httpcode ) {
+			return new WP_Error( 'api_error', sprintf(
+				__( 'API returned HTTP %d.', 'ai-assisted-writing' ),
+				$httpcode
+			) );
+		}
+
+		return true;
+	}
 }
