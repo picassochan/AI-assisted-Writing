@@ -102,6 +102,7 @@ class AIAW_Core {
 			'ajax_url'  => admin_url( 'admin-ajax.php' ),
 			'nonce'     => wp_create_nonce( 'aiaw_nonce' ),
 			'templates' => $templates,
+				'debug'     => ! empty( $settings['debug_mode'] ),
 			'strings'   => array(
 				'testing'           => __( 'Testing connection...', 'ai-assisted-writing' ),
 				'success'           => __( 'Connection successful!', 'ai-assisted-writing' ),

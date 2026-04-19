@@ -2,7 +2,31 @@
 	'use strict';
 
 	var AIAW = {
+		debug: false,
+
+		dlog: function() {
+			if (!this.debug) return;
+			var args = Array.prototype.slice.call(arguments);
+			var msg = '[AIAW] ' + args.join(' ');
+			console.log(msg);
+			var $log = $('#aiaw-debug-log');
+			if ($log.length) {
+				$log.append(msg + '\n');
+				$log.scrollTop($log[0].scrollHeight);
+			}
+		},
+
 		init: function() {
+			this.debug = !!(aiaw && aiaw.debug);
+			this.dlog('init — debug mode ON');
+			this.dlog('aiaw.templates =', JSON.stringify(aiaw.templates || []));
+
+			// Show JS templates in debug panel
+			var $jsTpl = $('#aiaw-debug-js-templates');
+			if ($jsTpl.length) {
+				$jsTpl.text(JSON.stringify(aiaw.templates || [], null, 2));
+			}
+
 			this.bindApiSettings();
 			this.bindTemplateManager();
 			this.bindWritingAssistant();
@@ -253,30 +277,39 @@
 				var $template = $('#aiaw-select-template');
 				$template.find('option:not(:first)').remove();
 
+				self.dlog('Category changed, catId=', catId);
+
 				if (!catId) {
 					$template.prop('disabled', true);
+					self.dlog('No category selected, template dropdown disabled');
 					return;
 				}
 
 				$template.prop('disabled', false);
 				$template.append($('<option>').val('').text(aiaw.strings.loading || 'Loading...'));
 
+				self.dlog('Sending AJAX aiaw_get_templates for category_id=', catId);
+
 				$.post(aiaw.ajax_url, {
 					action: 'aiaw_get_templates',
 					nonce: aiaw.nonce,
 					category_id: catId
 				}, function(response) {
+					self.dlog('AJAX response:', JSON.stringify(response));
 					$template.find('option:not(:first)').remove();
 
 					if (response.success && response.data.topics && response.data.topics.length > 0) {
+						self.dlog('Found', response.data.topics.length, 'topics');
 						for (var i = 0; i < response.data.topics.length; i++) {
 							var t = response.data.topics[i];
 							$template.append($('<option>').val(t.id).text(t.name));
 						}
 					} else {
+						self.dlog('No topics found. response.success=', response.success, 'data=', JSON.stringify(response.data || {}));
 						$template.append($('<option>').val('').text(aiaw.strings.no_templates));
 					}
-				}).fail(function() {
+				}).fail(function(xhr, status, error) {
+					self.dlog('AJAX FAILED:', status, error);
 					$template.find('option:not(:first)').remove();
 					$template.append($('<option>').val('').text(aiaw.strings.no_templates));
 				});
@@ -316,6 +349,8 @@
 			$articleTitle.val(title);
 			$('#aiaw-article-cat-id').val(catId);
 
+			self.dlog('Generate: catId=', catId, 'title=', title, 'templateId=', templateId);
+
 			// Try streaming first
 			self.generateStream(catId, title, templateId, $btn, $status, $content, $articleTitle);
 		},
@@ -333,14 +368,24 @@
 				description: $('#aiaw-input-description').val()
 			});
 
+			self.dlog('Stream: starting fetch to', aiaw.ajax_url);
+
 			fetch(aiaw.ajax_url, {
 				method: 'POST',
 				credentials: 'same-origin',
 				headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
 				body: params.toString()
 			}).then(function(response) {
+				self.dlog('Stream: response status=', response.status, 'ok=', response.ok);
+
 				if (!response.ok) {
-					// Non-200 response - fall back to AJAX
+					self.dlog('Stream: non-200 response, falling back to AJAX');
+					self.generateAjax(catId, title, templateId, $btn, $status, $content, $articleTitle);
+					return;
+				}
+
+				if (!response.body || !response.body.getReader) {
+					self.dlog('Stream: ReadableStream not available, falling back to AJAX');
 					self.generateAjax(catId, title, templateId, $btn, $status, $content, $articleTitle);
 					return;
 				}
@@ -351,6 +396,7 @@
 
 				function processChunk(result) {
 					if (result.done) {
+						self.dlog('Stream: reader done (no explicit [DONE])');
 						self.finalizeGeneratedContent(fullContent, title, $content, $articleTitle);
 						$status.text('');
 						$btn.prop('disabled', false);
@@ -373,11 +419,13 @@
 							$content.val(fullContent);
 							$content.scrollTop($content[0].scrollHeight);
 						} else if (data.type === 'done') {
+							self.dlog('Stream: received [DONE], total chars=', fullContent.length);
 							self.finalizeGeneratedContent(fullContent, title, $content, $articleTitle);
 							$status.text('');
 							$btn.prop('disabled', false);
 							return;
 						} else if (data.type === 'error') {
+							self.dlog('Stream: error from server —', data.message);
 							$status.text('');
 							$btn.prop('disabled', false);
 							alert(data.message);
@@ -389,8 +437,8 @@
 				}
 
 				return reader.read().then(processChunk);
-			}).catch(function() {
-				// Fetch failed (no ReadableStream support or network error) - fall back to AJAX
+			}).catch(function(err) {
+				self.dlog('Stream: fetch failed —', err.message, '— falling back to AJAX');
 				self.generateAjax(catId, title, templateId, $btn, $status, $content, $articleTitle);
 			});
 		},
@@ -401,6 +449,7 @@
 		generateAjax: function(catId, title, templateId, $btn, $status, $content, $articleTitle) {
 			var self = this;
 			$status.text(aiaw.strings.generating);
+			self.dlog('AJAX fallback: sending request');
 
 			$.post(aiaw.ajax_url, {
 				action: 'aiaw_generate',
@@ -410,6 +459,7 @@
 				title: title,
 				description: $('#aiaw-input-description').val()
 			}, function(response) {
+				self.dlog('AJAX response:', JSON.stringify(response).substring(0, 500));
 				$btn.prop('disabled', false);
 				$status.text('');
 				if (response.success) {
@@ -420,9 +470,11 @@
 						$('#aiaw-article-tags').val(response.data.tags.join(', '));
 					}
 				} else {
+					self.dlog('AJAX error:', response.data.message);
 					alert(response.data.message);
 				}
-			}).fail(function() {
+			}).fail(function(xhr, status, error) {
+				self.dlog('AJAX request failed:', status, error);
 				$btn.prop('disabled', false);
 				$status.text('');
 				alert(aiaw.strings.req_failed);

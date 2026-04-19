@@ -71,6 +71,7 @@ class AIAW_Settings {
 		$clean['api_key']       = sanitize_text_field( $input['api_key'] ?? '' );
 		$clean['primary_model'] = sanitize_text_field( $input['primary_model'] ?? '' );
 		$clean['backup_model']  = sanitize_text_field( $input['backup_model'] ?? '' );
+		$clean['debug_mode']   = ! empty( $input['debug_mode'] ) ? 1 : 0;
 		return $clean;
 	}
 

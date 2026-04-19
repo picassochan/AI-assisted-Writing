@@ -89,5 +89,23 @@ defined( 'ABSPATH' ) || exit;
 		</tr>
 	</table>
 
+	<hr />
+
+	<table class="form-table" role="presentation">
+		<tr>
+			<th scope="row">
+				<?php esc_html_e( 'Debug Mode', 'ai-assisted-writing' ); ?>
+			</th>
+			<td>
+				<label>
+					<input type="checkbox" id="aiaw_debug_mode"
+						name="aiaw_api_settings[debug_mode]"
+						value="1" <?php checked( ! empty( $settings['debug_mode'] ) ); ?> />
+					<?php esc_html_e( 'Enable debug mode (shows debug panel on Writing Assistant page)', 'ai-assisted-writing' ); ?>
+				</label>
+			</td>
+		</tr>
+	</table>
+
 	<?php submit_button(); ?>
 </form>

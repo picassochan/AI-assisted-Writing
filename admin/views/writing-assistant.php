@@ -6,6 +6,8 @@
  */
 
 defined( 'ABSPATH' ) || exit;
+
+$debug_mode = ! empty( $settings['debug_mode'] );
 ?>
 <div class="wrap">
 	<h1><?php esc_html_e( 'AI Writing Assistant', 'ai-assisted-writing' ); ?></h1>
@@ -101,5 +103,25 @@ defined( 'ABSPATH' ) || exit;
 		</div>
 	</div>
 
+	<?php endif; ?>
+
+	<?php if ( $debug_mode ) : ?>
+	<!-- Debug Panel -->
+	<div class="aiaw-debug-panel" style="margin-top:20px;">
+		<div class="aiaw-card" style="border-color:#dba617;">
+			<h3 style="color:#dba617;">Debug Panel</h3>
+			<p><strong>Templates from DB:</strong> <code id="aiaw-debug-templates" style="display:block;white-space:pre-wrap;max-height:200px;overflow:auto;background:#f0f0f1;padding:8px;font-size:12px;"><?php echo esc_html( wp_json_encode( $templates, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE ) ); ?></code></p>
+			<p><strong>WP Categories:</strong> <code id="aiaw-debug-categories" style="display:block;white-space:pre-wrap;max-height:150px;overflow:auto;background:#f0f0f1;padding:8px;font-size:12px;"><?php
+				$cat_debug = array();
+				foreach ( $categories as $c ) {
+					$cat_debug[] = array( 'term_id' => $c->term_id, 'name' => $c->name );
+				}
+				echo esc_html( wp_json_encode( $cat_debug, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE ) );
+			?></code></p>
+			<p><strong>JS aiaw.templates:</strong> <code id="aiaw-debug-js-templates" style="display:block;white-space:pre-wrap;max-height:200px;overflow:auto;background:#e0f0e0;padding:8px;font-size:12px;">(waiting for JS...)</code></p>
+			<p><strong>Log:</strong></p>
+			<pre id="aiaw-debug-log" style="background:#1d2327;color:#50c878;padding:12px;font-size:12px;max-height:300px;overflow:auto;white-space:pre-wrap;"></pre>
+		</div>
+	</div>
 	<?php endif; ?>
 </div>
