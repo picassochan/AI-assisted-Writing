@@ -250,6 +250,7 @@ class AIAW_Settings {
 		$active_tab    = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'api';
 		$saved_primary = $settings['primary_model'] ?? '';
 		$saved_backup  = $settings['backup_model'] ?? '';
+		$cached_models = get_transient( 'aiaw_models_cache' ) ?: array();
 
 		echo '<div class="wrap">';
 		echo '<h1>' . esc_html__( 'AI-assisted Writing Settings', 'ai-assisted-writing' ) . '</h1>';
