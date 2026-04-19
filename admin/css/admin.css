@@ -1,0 +1,186 @@
+/* AI-assisted Writing - Admin Styles */
+
+.aiaw-card {
+	background: #fff;
+	border: 1px solid #ccd0d4;
+	border-radius: 4px;
+	padding: 20px;
+	margin-bottom: 20px;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+
+.aiaw-card h3 {
+	margin-top: 0;
+	padding-top: 0;
+	border-bottom: 1px solid #eee;
+	padding-bottom: 10px;
+}
+
+/* Writing Assistant Layout */
+.aiaw-writing-layout {
+	display: flex;
+	gap: 20px;
+	align-items: flex-start;
+}
+
+.aiaw-control-panel {
+	flex: 0 0 320px;
+	min-width: 280px;
+}
+
+.aiaw-editor-panel {
+	flex: 1;
+	min-width: 0;
+}
+
+/* Category Cards */
+.aiaw-category-card {
+	background: #f9f9f9;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	margin-bottom: 15px;
+}
+
+.aiaw-category-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 12px 15px;
+	background: #f0f0f1;
+	border-bottom: 1px solid #ddd;
+	border-radius: 4px 4px 0 0;
+}
+
+.aiaw-category-header h3 {
+	margin: 0;
+	padding: 0;
+	border: none;
+	font-size: 14px;
+}
+
+.aiaw-cat-wp {
+	color: #666;
+	font-weight: normal;
+	font-size: 12px;
+}
+
+.aiaw-category-actions .button {
+	margin-left: 5px;
+}
+
+/* Topics */
+.aiaw-topics {
+	padding: 15px;
+}
+
+.aiaw-topic-item {
+	background: #fff;
+	border: 1px solid #e5e5e5;
+	border-radius: 3px;
+	padding: 12px;
+	margin-bottom: 10px;
+}
+
+.aiaw-topic-item strong {
+	display: block;
+	margin-bottom: 6px;
+}
+
+.aiaw-topic-prompt {
+	background: #f5f5f5;
+	padding: 8px;
+	border-radius: 3px;
+	font-size: 13px;
+	white-space: pre-wrap;
+	max-height: 100px;
+	overflow-y: auto;
+}
+
+.aiaw-topic-actions {
+	margin-top: 8px;
+}
+
+.aiaw-topic-actions .button {
+	margin-right: 5px;
+}
+
+.aiaw-no-topics {
+	color: #999;
+	font-style: italic;
+}
+
+/* Add Topic Form */
+.aiaw-add-topic-form {
+	border-top: 1px dashed #ddd;
+	padding-top: 12px;
+	margin-top: 12px;
+}
+
+.aiaw-add-topic-form h4 {
+	margin: 0 0 10px 0;
+}
+
+/* Modal */
+.aiaw-modal {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: rgba(0, 0, 0, 0.5);
+	z-index: 100000;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.aiaw-modal-content {
+	background: #fff;
+	border-radius: 4px;
+	padding: 25px;
+	width: 480px;
+	max-width: 90%;
+	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.aiaw-modal-content h3 {
+	margin-top: 0;
+}
+
+/* Status indicators */
+#aiaw-api-status {
+	display: inline-block;
+	margin-left: 10px;
+	padding: 2px 8px;
+	border-radius: 3px;
+	font-size: 13px;
+}
+
+#aiaw-api-status.notice {
+	padding: 4px 10px;
+}
+
+#aiaw-generate-status,
+#aiaw-save-status {
+	font-style: italic;
+	color: #666;
+	margin-left: 10px;
+}
+
+/* Empty state */
+.aiaw-empty {
+	color: #999;
+	font-style: italic;
+	padding: 20px 0;
+}
+
+/* Responsive */
+@media (max-width: 782px) {
+	.aiaw-writing-layout {
+		flex-direction: column;
+	}
+	.aiaw-control-panel {
+		flex: none;
+		width: 100%;
+	}
+}
