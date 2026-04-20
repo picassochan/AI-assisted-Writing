@@ -35,6 +35,7 @@
 			this.bindWritingAssistant();
 			this.populateModelDropdown();
 			this.abortController = null;
+			this.initToolbar();
 		},
 
 		// ========================================
@@ -336,6 +337,9 @@
 			$('#aiaw-publish-btn').on('click', function() {
 				self.createPost('publish');
 			});
+			$('#aiaw-preview-btn').on('click', function() {
+				self.previewPost();
+			});
 
 			// Generate SEO button
 			$('#aiaw-generate-seo-btn').on('click', function() {
@@ -378,6 +382,8 @@
 			var $btn = $('#aiaw-generate-btn');
 
 			$btn.prop('disabled', true);
+			$('#aiaw-stop-btn').show();
+			self.abortController = new AbortController();
 			$status.text(aiaw.strings.generating);
 			$content.val('');
 			$articleTitle.val(title);
@@ -440,6 +446,7 @@
 						var seoTitle = $articleTitle.val();
 						var seoContent = $content.val();
 						if (aiaw.seo_enabled && seoTitle && seoContent) { self.generateSEO(seoTitle, seoContent); }
+					self.generateTags(seoTitle, seoContent);
 						return;
 					}
 
@@ -468,6 +475,7 @@
 							var seoTitle = $articleTitle.val();
 							var seoContent = $content.val();
 							if (aiaw.seo_enabled && seoTitle && seoContent) { self.generateSEO(seoTitle, seoContent); }
+					self.generateTags(seoTitle, seoContent);
 							return;
 						} else if (data.type === 'error') {
 							self.dlog('Stream: error from server —', data.message);
@@ -520,13 +528,14 @@
 					$articleTitle.val(response.data.title || title);
 					$content.val(response.data.content || '');
 					$('#aiaw-article-cat-id').val(response.data.category_id);
-					if (response.data.tags && response.data.tags.length > 0) {
-						$('#aiaw-article-tags').val(response.data.tags.join(', '));
-					}
+					var tagTitle = $articleTitle.val();
+					var tagContent = $content.val();
+					self.generateTags(tagTitle, tagContent);
 					// Auto-generate SEO
 					var seoTitle = $articleTitle.val();
 					var seoContent = $content.val();
 					if (aiaw.seo_enabled && seoTitle && seoContent) { self.generateSEO(seoTitle, seoContent); }
+					self.generateTags(seoTitle, seoContent);
 				} else {
 					self.dlog('AJAX error:', response.data.message);
 					alert(response.data.message);
@@ -608,6 +617,135 @@
 			}
 		},
 
+		initToolbar: function() {
+			var self = this;
+
+			$('#aiaw-md-toolbar').on('click', 'button[data-action]', function(e) {
+				e.preventDefault();
+				var action = $(this).data('action');
+				if (action === 'image') {
+					self.openMediaLibrary();
+				} else {
+					self.insertMarkdown(action);
+				}
+			});
+		},
+
+		insertMarkdown: function(action) {
+			var textarea = document.getElementById('aiaw-article-content');
+			if (!textarea) return;
+			var start = textarea.selectionStart;
+			var end = textarea.selectionEnd;
+			var text = textarea.value;
+			var selected = text.substring(start, end);
+			var before = '', after = '', insert = '';
+
+			switch (action) {
+				case 'bold':
+					before = '**'; after = '**';
+					insert = selected || 'bold text';
+					break;
+				case 'italic':
+					before = '*'; after = '*';
+					insert = selected || 'italic text';
+					break;
+				case 'heading':
+					before = '## '; after = '';
+					insert = selected || 'Heading';
+					var lineStart = text.lastIndexOf('\n', start - 1) + 1;
+					start = lineStart;
+					break;
+				case 'ul':
+					before = '- '; after = '';
+					insert = selected || 'List item';
+					break;
+				case 'ol':
+					before = '1. '; after = '';
+					insert = selected || 'List item';
+					break;
+				case 'quote':
+					before = '> '; after = '';
+					insert = selected || 'Blockquote';
+					break;
+				case 'link':
+					before = '['; after = '](url)';
+					insert = selected || 'link text';
+					break;
+			}
+
+			var replacement = before + insert + after;
+			textarea.value = text.substring(0, start) + replacement + text.substring(end);
+			textarea.focus();
+
+			var newCursorPos = start + before.length;
+			textarea.setSelectionRange(newCursorPos, newCursorPos + insert.length);
+		},
+
+		openMediaLibrary: function() {
+			if (typeof wp === 'undefined' || !wp.media) {
+				alert('WordPress Media Library is not available.');
+				return;
+			}
+
+			var frame = wp.media({
+				frame: 'select',
+				title: 'Insert Image',
+				library: { type: 'image' },
+				multiple: false
+			});
+
+			frame.on('select', function() {
+				var attachment = frame.state().get('selection').first().toJSON();
+				var alt = attachment.alt || attachment.title || '';
+				var url = attachment.url;
+				var markdown = '![' + alt + '](' + url + ')';
+
+				var textarea = document.getElementById('aiaw-article-content');
+				if (!textarea) return;
+				var start = textarea.selectionStart;
+				var text = textarea.value;
+				textarea.value = text.substring(0, start) + markdown + text.substring(start);
+				textarea.focus();
+				textarea.setSelectionRange(start, start + markdown.length);
+			});
+
+			frame.open();
+		},
+
+		stopGeneration: function() {
+			if (this.abortController) {
+				this.abortController.abort();
+				this.abortController = null;
+			}
+			$('#aiaw-stop-btn').hide();
+			$('#aiaw-generate-btn').prop('disabled', false);
+			$('#aiaw-generate-status').text('');
+		},
+
+		generateTags: function(title, content) {
+			if (!title || !content) return;
+			var self = this;
+			self.dlog('Auto-generating tags...');
+			$.post(aiaw.ajax_url, {
+				action: 'aiaw_generate_tags',
+				nonce: aiaw.nonce,
+				title: title,
+				content: content,
+				model: $('#aiaw-select-model').val() || ''
+			}, function(response) {
+				if (response.success && response.data.tags) {
+					$('#aiaw-article-tags').val(response.data.tags);
+					self.dlog('Tags generated:', response.data.tags);
+				}
+			}).fail(function() {
+				self.dlog('Tags generation failed (non-blocking)');
+			});
+		},
+
+		previewPost: function() {
+			this.createPost('draft', true);
+		},
+
 		populateModelDropdown: function() {
 			var models = aiaw.models || [];
 			var primary = aiaw.primary_model || '';
@@ -626,7 +764,7 @@
 			}
 		},
 
-		createPost: function(status) {
+		createPost: function(status, isPreview) {
 			var title = $('#aiaw-article-title').val();
 			var content = $('#aiaw-article-content').val();
 			var catId = $('#aiaw-article-cat-id').val();
@@ -658,7 +796,9 @@
 			}, function(response) {
 				if (response.success) {
 					$status.text(aiaw.strings.saved);
-					if (response.data.edit_url) {
+					if (isPreview && response.data.preview_url) {
+						window.open(response.data.preview_url, '_blank');
+					} else if (response.data.edit_url) {
 						window.open(response.data.edit_url, '_blank');
 					}
 				} else {

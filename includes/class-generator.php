@@ -23,6 +23,7 @@ class AIAW_Generator {
 		add_action( 'wp_ajax_aiaw_generate_stream', array( $this, 'ajax_generate_stream' ) );
 		add_action( 'wp_ajax_aiaw_create_post', array( $this, 'ajax_create_post' ) );
 		add_action( 'wp_ajax_aiaw_generate_seo', array( $this, 'ajax_generate_seo' ) );
+		add_action( 'wp_ajax_aiaw_generate_tags', array( $this, 'ajax_generate_tags' ) );
 	}
 
 	private function verify_request() {
@@ -281,8 +282,9 @@ class AIAW_Generator {
 		}
 
 		wp_send_json_success( array(
-			'post_id'  => $post_id,
-			'edit_url' => get_edit_post_link( $post_id, 'raw' ),
+			'post_id'     => $post_id,
+			'edit_url'    => get_edit_post_link( $post_id, 'raw' ),
+			'preview_url' => get_preview_post_link( $post_id ),
 		) );
 	}
 
@@ -317,6 +319,64 @@ class AIAW_Generator {
 		$data = $this->parse_seo_response( $result );
 
 		wp_send_json_success( $data );
+	}
+
+	/**
+	 * Generate tags for an article via AI.
+	 */
+	public function ajax_generate_tags() {
+		$this->verify_request();
+
+		$title   = sanitize_text_field( wp_unslash( $_POST['title'] ) );
+		$content = sanitize_textarea_field( wp_unslash( $_POST['content'] ) );
+
+		if ( empty( $title ) || empty( $content ) ) {
+			wp_send_json_error( array( 'message' => __( 'Title and content are required for tag generation.', 'ai-assisted-writing' ) ) );
+		}
+
+		$prompt   = $this->build_tags_prompt( $title, $content );
+		$messages = $this->build_tags_messages( $prompt );
+
+		$tags_model = isset( $_POST['model'] ) ? sanitize_text_field( wp_unslash( $_POST['model'] ) ) : '';
+		$result = AIAW_API::get_instance()->generate( $messages, $tags_model ?: null );
+
+		if ( is_wp_error( $result ) ) {
+			wp_send_json_error( array( 'message' => $result->get_error_message() ) );
+		}
+
+		$tags = $this->parse_tags_response( $result );
+
+		wp_send_json_success( array( 'tags' => $tags ) );
+	}
+
+	private function build_tags_prompt( $title, $content ) {
+		$truncated = mb_substr( $content, 0, 2000 );
+
+		return sprintf(
+			__( 'Analyze the following article and generate 5-8 relevant tags.\n\nTitle: "%1$s"\n\nContent:\n%2$s\n\nReturn ONLY a comma-separated list of tags in English. No numbers, no explanation, just the tags separated by commas. Example: technology, AI, machine learning, future tech', 'ai-assisted-writing' ),
+			$title,
+			$truncated
+		);
+	}
+
+	private function build_tags_messages( $prompt ) {
+		return array(
+			array(
+				'role'    => 'system',
+				'content' => __( 'You are a content tagging expert. Generate relevant, specific tags for articles. Always respond in the same language as the article content. Return ONLY comma-separated tags, nothing else.', 'ai-assisted-writing' ),
+			),
+			array(
+				'role'    => 'user',
+				'content' => $prompt,
+			),
+		);
+	}
+
+	private function parse_tags_response( $result ) {
+		$result = trim( $result );
+		$result = preg_replace( '/^```.*?\n/m', '', $result );
+		$result = preg_replace( '/\n?```$/', '', $result );
+		return trim( $result );
 	}
 
 	private function build_seo_prompt( $title, $content ) {

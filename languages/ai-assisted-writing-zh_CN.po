@@ -353,3 +353,12 @@ msgstr "默认（主模型）"
 
 msgid "Stop"
 msgstr "停止"
+
+msgid "Preview"
+msgstr "预览"
+
+msgid "Title and content are required for tag generation."
+msgstr "生成标签需要标题和内容。"
+
+msgid "You are a content tagging expert. Generate relevant, specific tags for articles. Always respond in the same language as the article content. Return ONLY comma-separated tags, nothing else."
+msgstr "你是一位内容标签专家。为文章生成相关、具体的标签。始终使用与文章内容相同的语言回复。只返回逗号分隔的标签，不要其他内容。"

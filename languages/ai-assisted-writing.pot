@@ -351,3 +351,12 @@ msgstr ""
 
 msgid "Stop"
 msgstr ""
+
+msgid "Preview"
+msgstr ""
+
+msgid "Title and content are required for tag generation."
+msgstr ""
+
+msgid "You are a content tagging expert. Generate relevant, specific tags for articles. Always respond in the same language as the article content. Return ONLY comma-separated tags, nothing else."
+msgstr ""

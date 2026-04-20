@@ -213,6 +213,59 @@
 	vertical-align: middle;
 }
 
+/* Markdown Toolbar */
+.aiaw-toolbar {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 2px;
+	padding: 4px 6px;
+	background: #f6f7f7;
+	border: 1px solid #ccc;
+	border-bottom: none;
+	border-radius: 4px 4px 0 0;
+}
+
+.aiaw-toolbar button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 32px;
+	height: 30px;
+	padding: 0;
+	border: 1px solid transparent;
+	border-radius: 3px;
+	background: transparent;
+	color: #50575e;
+	cursor: pointer;
+	font-size: 14px;
+	line-height: 1;
+	transition: background 0.15s, border-color 0.15s;
+}
+
+.aiaw-toolbar button:hover {
+	background: #fff;
+	border-color: #8c8f94;
+	color: #1d2327;
+}
+
+.aiaw-toolbar button:active {
+	background: #ddd;
+	border-color: #50575e;
+}
+
+.aiaw-toolbar .separator {
+	width: 1px;
+	height: 24px;
+	background: #ddd;
+	margin: 3px 4px;
+	align-self: center;
+}
+
+#aiaw-article-content.aiaw-toolbar-content {
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+}
+
 /* Responsive */
 @media (max-width: 782px) {
 	.aiaw-writing-layout {

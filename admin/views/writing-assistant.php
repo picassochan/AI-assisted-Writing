@@ -90,7 +90,19 @@ $debug_mode = ! empty( $settings['debug_mode'] );
 
 				<p>
 					<label for="aiaw-article-content"><?php esc_html_e( 'Content', 'ai-assisted-writing' ); ?></label><br />
-					<textarea id="aiaw-article-content" class="large-text" rows="20"></textarea>
+					<div class="aiaw-toolbar" id="aiaw-md-toolbar">
+					<button type="button" data-action="bold" title="Bold"><span class="dashicons dashicons-editor-bold"></span></button>
+					<button type="button" data-action="italic" title="Italic"><span class="dashicons dashicons-editor-italic"></span></button>
+					<button type="button" data-action="heading" title="Heading"><span class="dashicons dashicons-heading"></span></button>
+					<span class="separator"></span>
+					<button type="button" data-action="ul" title="Unordered List"><span class="dashicons dashicons-editor-ul"></span></button>
+					<button type="button" data-action="ol" title="Ordered List"><span class="dashicons dashicons-editor-ol"></span></button>
+					<button type="button" data-action="quote" title="Blockquote"><span class="dashicons dashicons-editor-quote"></span></button>
+					<span class="separator"></span>
+					<button type="button" data-action="link" title="Insert Link"><span class="dashicons dashicons-admin-links"></span></button>
+					<button type="button" data-action="image" title="Insert Image"><span class="dashicons dashicons-format-image"></span></button>
+				</div>
+					<textarea id="aiaw-article-content" class="large-text aiaw-toolbar-content" rows="20"></textarea>
 				</p>
 
 				<p>
@@ -106,6 +118,9 @@ $debug_mode = ! empty( $settings['debug_mode'] );
 					</button>
 					<button type="button" id="aiaw-publish-btn" class="button button-primary">
 						<?php esc_html_e( 'Publish', 'ai-assisted-writing' ); ?>
+					</button>
+					<button type="button" id="aiaw-preview-btn" class="button">
+						<?php esc_html_e( 'Preview', 'ai-assisted-writing' ); ?>
 					</button>
 					<span id="aiaw-save-status"></span>
 				</p>

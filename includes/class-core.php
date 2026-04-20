@@ -76,6 +76,11 @@ class AIAW_Core {
 			return;
 		}
 
+		// Media library support for the Writing Assistant editor toolbar.
+		if ( 'ai-assisted-writing-writing' === $page ) {
+			wp_enqueue_media();
+		}
+
 		wp_enqueue_style(
 			'aiaw-admin',
 			AIAW_PLUGIN_URL . 'admin/css/admin.css',
